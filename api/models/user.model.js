@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema(
       enum: ["customer", "driver", "admin"],
       required: true,
     },
-    fullname: {
+    fullName: {
       type: String,
       required: true,
     },
@@ -56,6 +56,12 @@ const userSchema = new mongoose.Schema(
     },
     about: {
       type: String,
+      required: function () {
+        return this.role === "driver";
+      },
+    },
+    dob: {
+      type: Date,
       required: function () {
         return this.role === "driver";
       },
