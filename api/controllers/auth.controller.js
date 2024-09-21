@@ -9,12 +9,10 @@ export const signup = async (req, res, next) => {
     !username ||
     !email ||
     !password ||
-    !role ||
     !fullName ||
     username == "" ||
     email == "" ||
     password == "" ||
-    role == "" ||
     fullName == ""
   ) {
     next(errorHandler(400, "All fields are required"));

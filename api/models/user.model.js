@@ -25,6 +25,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       enum: ["customer", "driver", "admin"],
       required: true,
+      default: "customer",
     },
     fullName: {
       type: String,
