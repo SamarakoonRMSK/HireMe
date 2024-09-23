@@ -67,6 +67,10 @@ const userSchema = new mongoose.Schema(
         return this.role === "driver";
       },
     },
+    isVerify: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

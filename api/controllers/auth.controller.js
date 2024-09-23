@@ -74,3 +74,37 @@ export const signup = async (req, res, next) => {
     }
   }
 };
+
+export const signin = async (req, res, next) => {
+  const { email, password } = req.body;
+  if (!email || !password || email === "" || password === "") {
+    return next(errorHandler(400, "All fields are required"));
+  }
+  try {
+    const findUser = await User.findOne({ email });
+    if (!findUser) {
+      return next(errorHandler(404, "User not found"));
+    }
+    const isValidPassword = bcrypt.compareSync(password, findUser.password);
+    if (!isValidPassword) {
+      return next(errorHandler(400, "Invalid password"));
+    }
+    const token = jwt.sign(
+      {
+        id: findUser._id,
+        role: findUser.role,
+      },
+      process.env.JWT_SECRET
+    );
+    const { password: pass, ...rest } = findUser._doc;
+    res
+      .status(200)
+      .cookie("access_token", token, {
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000,
+      })
+      .json(rest);
+  } catch (error) {
+    next(error);
+  }
+};
