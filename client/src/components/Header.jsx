@@ -1,9 +1,12 @@
-import { Avatar, Dropdown, Navbar } from "flowbite-react";
+import { Avatar, Dropdown, Navbar, Button } from "flowbite-react";
 import logo from "../assets/logo.png";
 import { Badge } from "flowbite-react";
 import { HiCheck, HiClock } from "react-icons/hi";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 export default function Header() {
+  const { currentUser } = useSelector((state) => state.userSlice);
   return (
     <Navbar fluid rounded>
       <Navbar.Brand href="https://flowbite-react.com">
@@ -13,40 +16,56 @@ export default function Header() {
         </span>
       </Navbar.Brand>
       <div className="flex md:order-2">
-        <Dropdown
-          arrowIcon={false}
-          inline
-          label={
-            <div style={{ position: "relative" }}>
-              <Avatar
-                alt="User settings"
-                img="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-                rounded
-              />
-              <Badge
-                icon={HiCheck}
-                style={{
-                  position: "absolute",
-                  bottom: 6,
-                  right: 6,
-                  transform: "translate(50%, 50%)", // to place the badge at the corner
-                }}
-              />
-            </div>
-          }
-        >
-          <Dropdown.Header>
-            <span className="block text-sm">Bonnie Green</span>
-            <span className="block truncate text-sm font-medium">
-              name@flowbite.com
-            </span>
-          </Dropdown.Header>
-          <Dropdown.Item>Dashboard</Dropdown.Item>
-          <Dropdown.Item>Settings</Dropdown.Item>
-          <Dropdown.Item>Earnings</Dropdown.Item>
-          <Dropdown.Divider />
-          <Dropdown.Item>Sign out</Dropdown.Item>
-        </Dropdown>
+        {currentUser ? (
+          <Dropdown
+            arrowIcon={false}
+            inline
+            label={
+              <div style={{ position: "relative" }} className="mr-2">
+                <Avatar
+                  alt="User settings"
+                  img="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                  rounded
+                />
+                <Badge
+                  icon={HiCheck}
+                  style={{
+                    position: "absolute",
+                    bottom: 6,
+                    right: 6,
+                    transform: "translate(50%, 50%)", // to place the badge at the corner
+                  }}
+                />
+              </div>
+            }
+          >
+            <Dropdown.Header>
+              <span className="block text-sm">{currentUser.username}</span>
+              <span className="block truncate text-sm font-medium">
+                {currentUser.email}
+              </span>
+            </Dropdown.Header>
+
+            <Dropdown.Item>profile</Dropdown.Item>
+            <Link to="/create-vacancy">
+              <Dropdown.Item>Create vacancy</Dropdown.Item>
+            </Link>
+            <Dropdown.Item>Earnings</Dropdown.Item>
+            <Dropdown.Divider />
+            <Dropdown.Item>Sign out</Dropdown.Item>
+          </Dropdown>
+        ) : (
+          <div className="flex flex-row gap-2">
+            <Link to="/signup">
+              <Button gradientDuoTone="purpleToBlue">Sign up</Button>
+            </Link>
+            <Link to="/signin">
+              <Button gradientDuoTone="purpleToBlue" outline>
+                Sign in
+              </Button>
+            </Link>
+          </div>
+        )}
         <Navbar.Toggle />
       </div>
       <Navbar.Collapse>

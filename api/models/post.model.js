@@ -37,6 +37,10 @@ const PostSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  vType: {
+    type: String,
+    required: true,
+  },
 });
 
 const Post = mongoose.model("Post", PostSchema);
