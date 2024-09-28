@@ -12,6 +12,7 @@ export const createPost = async (req, res, next) => {
     !req.body.to ||
     !req.body.duration ||
     !req.body.vType ||
+    !req.body.price ||
     req.body.vType === ""
   ) {
     return next(errorHandler(400, "Please provide all required fields"));
@@ -35,11 +36,21 @@ export const applyForVacancy = async (req, res, next) => {
     );
   }
   const newApplicant = {
+    userId: req.user.id,
     image: req.body.image,
     email: req.body.email,
     username: req.body.username,
+    rating: req.body.rating,
   };
+
   try {
+    const post = await Post.findById(req.params.postId);
+    const hasApplied = post.applicants.some(
+      (applicant) => applicant.userId === req.user.id
+    );
+    if (hasApplied) {
+      return next(errorHandler(400, "You have already applied"));
+    }
     const updatedPost = await Post.findByIdAndUpdate(
       req.params.postId,
       {
@@ -48,6 +59,31 @@ export const applyForVacancy = async (req, res, next) => {
       { new: true }
     );
     res.status(200).json(updatedPost);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getPosts = async (req, res, next) => {
+  try {
+    const startIndex = parseInt(req.query.startIndex) || 0;
+    const limit = parseInt(req.query.limit) || 9;
+    const sortDirection = req.query.order === "asc" ? 1 : -1;
+    const posts = await Post.find({
+      ...(req.query.userId && { userId: req.query.userId }),
+      ...(req.query.postId && { _id: req.query.postId }),
+      ...(req.query.searchTerm && {
+        $or: [
+          { title: { $regex: req.query.searchTerm, $options: "i" } },
+          { description: { $regex: req.query.searchTerm, $options: "i" } },
+        ],
+      }),
+    })
+      .sort({ updatedAt: sortDirection })
+      .skip(startIndex)
+      .limit(limit);
+
+    res.status(200).json({ posts });
   } catch (error) {
     next(error);
   }
