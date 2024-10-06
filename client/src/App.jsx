@@ -5,6 +5,7 @@ import Signup from "./pages/Signup";
 import Signin from "./pages/Signin";
 import CreatePost from "./pages/CreatePost";
 import VacancyPage from "./pages/VacancyPage";
+import Dashboard from "./pages/Dashboard";
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
         <Route path="/signin" element={<Signin />} />
         <Route path="/create-vacancy" element={<CreatePost />} />
         <Route path="/vacancy/:postId" element={<VacancyPage />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </BrowserRouter>
   );

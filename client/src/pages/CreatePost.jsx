@@ -25,6 +25,8 @@ export default function CreatePost() {
     }
   };
 
+  console.log(formData);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -34,13 +36,15 @@ export default function CreatePost() {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
+      console.log(data);
+
       if (!res.ok) {
         setPublishError(data.message);
         return;
       }
       if (res.ok) {
         setPublishError(null);
-        navigate("/");
+        navigate(`/vacancy/${data._id}`);
       }
     } catch (error) {
       setPublishError(error);
@@ -110,7 +114,7 @@ export default function CreatePost() {
           <option value="A">A</option>
           <option value="B1">B1</option>
           <option value="B">B</option>
-          <option value="C1">C</option>
+          <option value="C1">C1</option>
           <option value="C">C</option>
           <option value="CE">CE</option>
           <option value="D1">D1</option>
@@ -120,6 +124,14 @@ export default function CreatePost() {
           <option value="G">G</option>
           <option value="J">J</option>
         </Select>
+        <TextInput
+          type="number"
+          placeholder="Rs. "
+          required
+          id="price"
+          className="flex-1"
+          onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+        />
 
         <Button type="submit" gradientDuoTone="purpleToPink">
           Publish

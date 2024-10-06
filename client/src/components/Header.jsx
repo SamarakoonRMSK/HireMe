@@ -4,17 +4,42 @@ import { Badge } from "flowbite-react";
 import { HiCheck, HiClock } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { signoutSuccess } from "../store/user/userSlice";
 
 export default function Header() {
   const { currentUser } = useSelector((state) => state.userSlice);
+  const dispatch = useDispatch();
+
+  const handleSignout = async () => {
+    try {
+      const res = await fetch("/api/user/signout", {
+        method: "POST",
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        console.log(data.message);
+      } else {
+        dispatch(signoutSuccess());
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Navbar fluid rounded>
-      <Navbar.Brand href="https://flowbite-react.com">
-        <img src={logo} className="mr-3 h-6 sm:h-9" alt="Flowbite React Logo" />
-        <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
-          HireMe
-        </span>
-      </Navbar.Brand>
+      <Link to="/">
+        <Navbar.Brand as={"div"}>
+          <img
+            src={logo}
+            className="mr-3 h-6 sm:h-9"
+            alt="Flowbite React Logo"
+          />
+          <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
+            HireMe
+          </span>
+        </Navbar.Brand>
+      </Link>
       <div className="flex md:order-2">
         {currentUser ? (
           <Dropdown
@@ -47,12 +72,15 @@ export default function Header() {
             </Dropdown.Header>
 
             <Dropdown.Item>profile</Dropdown.Item>
-            <Link to="/create-vacancy">
-              <Dropdown.Item>Create vacancy</Dropdown.Item>
-            </Link>
+            {currentUser.role === "customer" && (
+              <Link to="/create-vacancy">
+                <Dropdown.Item>Create vacancy</Dropdown.Item>
+              </Link>
+            )}
+
             <Dropdown.Item>Earnings</Dropdown.Item>
             <Dropdown.Divider />
-            <Dropdown.Item>Sign out</Dropdown.Item>
+            <Dropdown.Item onClick={handleSignout}>Sign out</Dropdown.Item>
           </Dropdown>
         ) : (
           <div className="flex flex-row gap-2">
@@ -69,13 +97,13 @@ export default function Header() {
         <Navbar.Toggle />
       </div>
       <Navbar.Collapse>
-        <Navbar.Link href="#" active>
+        <Navbar.Link as={"div"} active>
           Home
         </Navbar.Link>
-        <Navbar.Link href="#">About</Navbar.Link>
-        <Navbar.Link href="#">Services</Navbar.Link>
-        <Navbar.Link href="#">Pricing</Navbar.Link>
-        <Navbar.Link href="#">Contact</Navbar.Link>
+        <Navbar.Link as={"div"}>About</Navbar.Link>
+        <Navbar.Link as={"div"}>Services</Navbar.Link>
+
+        <Navbar.Link as={"div"}>Contact</Navbar.Link>
       </Navbar.Collapse>
     </Navbar>
   );
