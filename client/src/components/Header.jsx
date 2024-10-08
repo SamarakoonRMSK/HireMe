@@ -71,7 +71,9 @@ export default function Header() {
               </span>
             </Dropdown.Header>
 
-            <Dropdown.Item>profile</Dropdown.Item>
+            <Link to="/dashboard?tab=profile">
+              <Dropdown.Item>profile</Dropdown.Item>
+            </Link>
             {currentUser.role === "customer" && (
               <Link to="/create-vacancy">
                 <Dropdown.Item>Create vacancy</Dropdown.Item>
