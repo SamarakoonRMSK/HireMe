@@ -25,7 +25,9 @@ import {
 } from "../store/user/userSlice";
 
 export default function DashProfile() {
-  const [formData, setFormData] = useState({});
+  const { currentUser, error, loading } = useSelector(
+    (state) => state.userSlice
+  );
   const [imageFile, setImageFile] = useState(null);
   const [reportFile, setReportFile] = useState(null);
   const [imageFileUploadProgress, setImageFileUploadProgress] = useState(null);
@@ -44,9 +46,7 @@ export default function DashProfile() {
   const dispatch = useDispatch();
 
   const imagePickerRef = useRef();
-  const { currentUser, error, loading } = useSelector(
-    (state) => state.userSlice
-  );
+  const [formData, setFormData] = useState({ role: currentUser.role });
 
   const handleCheckboxChange = (e) => {
     const vTypeArray = Array.isArray(formData.vType)
@@ -156,7 +156,7 @@ export default function DashProfile() {
       setUpdateUserError("There are no any changes");
       return;
     }
-    setFormData({ ...formData, role: currentUser.role });
+
     if (imageFileUploading || reportFileUploading) {
       setUpdateUserError("Please wait for image upload");
       return;
@@ -169,6 +169,8 @@ export default function DashProfile() {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
+      console.log(data);
+
       if (!res.ok) {
         dispatch(updateFailure(data.message));
         setUpdateUserError(data.message);
