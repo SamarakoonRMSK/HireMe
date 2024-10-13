@@ -49,7 +49,7 @@ export default function Header() {
               <div style={{ position: "relative" }} className="mr-2">
                 <Avatar
                   alt="User settings"
-                  img="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                  img={currentUser.profilePicture}
                   rounded
                 />
                 <Badge
@@ -102,6 +102,9 @@ export default function Header() {
         <Navbar.Link as={"div"} active>
           Home
         </Navbar.Link>
+        {currentUser.role === "customer" && (
+          <Navbar.Link as={"div"}>About</Navbar.Link>
+        )}
         <Navbar.Link as={"div"}>About</Navbar.Link>
         <Navbar.Link as={"div"}>Services</Navbar.Link>
 
