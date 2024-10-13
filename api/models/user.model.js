@@ -27,6 +27,7 @@ const userSchema = new mongoose.Schema(
       required: true,
       default: "customer",
     },
+
     fullName: {
       type: String,
       required: true,
@@ -51,6 +52,12 @@ const userSchema = new mongoose.Schema(
     },
     vType: {
       type: [String],
+      required: function () {
+        return this.role === "driver";
+      },
+    },
+    rate: {
+      type: [Number],
       required: function () {
         return this.role === "driver";
       },

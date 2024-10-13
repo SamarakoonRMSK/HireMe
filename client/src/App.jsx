@@ -7,6 +7,7 @@ import CreatePost from "./pages/CreatePost";
 import VacancyPage from "./pages/VacancyPage";
 import Dashboard from "./pages/Dashboard";
 import Message from "./pages/Message";
+import AllDrivers from "./pages/AllDrivers";
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
         <Route path="/vacancy/:postId" element={<VacancyPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/message" element={<Message />} />
+        <Route path="/drivers" element={<AllDrivers />} />
       </Routes>
     </BrowserRouter>
   );

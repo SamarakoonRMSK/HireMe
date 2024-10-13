@@ -3,10 +3,11 @@ import logo from "../assets/logo.png";
 import { Badge } from "flowbite-react";
 import { HiCheck, HiClock } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { signoutSuccess } from "../store/user/userSlice";
 
 export default function Header() {
+  const location = useLocation();
   const { currentUser } = useSelector((state) => state.userSlice);
   const dispatch = useDispatch();
 
@@ -99,11 +100,17 @@ export default function Header() {
         <Navbar.Toggle />
       </div>
       <Navbar.Collapse>
-        <Navbar.Link as={"div"} active={location.pathname == "/"}>
-          Home
-        </Navbar.Link>
+        <Link to="/">
+          <Navbar.Link as={"div"} active={location.pathname == "/"}>
+            Home
+          </Navbar.Link>
+        </Link>
         {currentUser.role === "customer" && (
-          <Navbar.Link as={"div"}>Hire Driver</Navbar.Link>
+          <Link to="/drivers">
+            <Navbar.Link as={"div"} active={location.pathname == "/drivers"}>
+              Hire Driver
+            </Navbar.Link>
+          </Link>
         )}
         <Navbar.Link as={"div"}>About</Navbar.Link>
         <Navbar.Link as={"div"}>Services</Navbar.Link>
