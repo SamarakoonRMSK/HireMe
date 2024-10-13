@@ -57,15 +57,15 @@ export default function DashSlidebar() {
             >
               Profile
             </Sidebar.Item>
-            <Sidebar.Item
-              icon={HiArrowSmRight}
-              as="div"
-              className="cursor-pointer"
-              onClick={handleSignout}
-            >
-              Sign Out
-            </Sidebar.Item>
           </Link>
+          <Sidebar.Item
+            icon={HiArrowSmRight}
+            as="div"
+            className="cursor-pointer"
+            onClick={handleSignout}
+          >
+            Sign Out
+          </Sidebar.Item>
         </Sidebar.ItemGroup>
       </Sidebar.Items>
     </Sidebar>

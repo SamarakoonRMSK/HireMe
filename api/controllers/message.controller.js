@@ -1,46 +1,78 @@
 import Message from "../models/message.model.js";
 import Conversation from "../models/conversation.model.js";
+import User from "../models/user.model.js";
 import { errorHandler } from "../utils/error.js";
-import { getReceiverSocketId } from "../index.js";
+import { getReceiverSocketId, io } from "../socket/socket.js";
+
+export const getUsers = async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const senderId = req.user.id;
+    if (userId !== senderId) {
+      return next(errorHandler(401, "Unauthorized"));
+    }
+    const users = await Conversation.find({ participants: userId }).populate(
+      "participants"
+    );
+
+    const otherParticipants = users.flatMap((conversation) =>
+      conversation.participants.filter(
+        (participant) => !participant._id.equals(userId)
+      )
+    );
+
+    res.status(200).json(otherParticipants);
+  } catch (error) {
+    next(error);
+  }
+};
 
 export const sendMessage = async (req, res, next) => {
   try {
     const { message } = req.body;
     const { receiverId, userId } = req.params;
     const senderId = req.user.id;
+
     if (userId !== senderId) {
-      return next(errorHandler(403, "You are not allowed to message!"));
+      return next(errorHandler(401, "You are not allowed to message!"));
     }
-    if (userId === receiverId) {
-      return next(errorHandler(403, "You are not allowed to message!"));
+    if (req.params.userId === req.params.receiverId) {
+      return next(errorHandler(403, "You cannot message yourself!"));
     }
-    const conversation = await Conversation.findOne({
-      participants: { $all: [senderId, receiverId] },
+    let conversation = await Conversation.findOne({
+      participants: { $all: [senderId, req.params.receiverId] },
     });
     if (!conversation) {
       conversation = await Conversation.create({
-        participants: [senderId, receiverId],
+        participants: [senderId, req.params.receiverId],
       });
+
+      const newUser = await User.findById(receiverId);
+
+      const socketId = getReceiverSocketId(receiverId);
+      if (socketId) {
+        io.to(socketId).emit("newUser", newUser);
+      }
     }
     const newMessage = new Message({
       senderId,
-      receiverId,
+      receiverId: req.params.receiverId,
       message,
     });
 
     if (newMessage) {
       conversation.messages.push(newMessage._id);
     }
-    await Promise.all([conversation.save(), newMessage.save()]);
 
     const receiverSocketId = getReceiverSocketId(receiverId);
     if (receiverSocketId) {
       io.to(receiverSocketId).emit("newMessage", newMessage);
     }
+    await Promise.all([conversation.save(), newMessage.save()]);
 
     res.status(201).json(newMessage);
   } catch (error) {
-    next(errorHandler(500, "Internal server error"));
+    next(error);
   }
 };
 
