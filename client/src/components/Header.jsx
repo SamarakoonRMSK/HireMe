@@ -99,11 +99,11 @@ export default function Header() {
         <Navbar.Toggle />
       </div>
       <Navbar.Collapse>
-        <Navbar.Link as={"div"} active>
+        <Navbar.Link as={"div"} active={location.pathname == "/"}>
           Home
         </Navbar.Link>
         {currentUser.role === "customer" && (
-          <Navbar.Link as={"div"}>About</Navbar.Link>
+          <Navbar.Link as={"div"}>Hire Driver</Navbar.Link>
         )}
         <Navbar.Link as={"div"}>About</Navbar.Link>
         <Navbar.Link as={"div"}>Services</Navbar.Link>
