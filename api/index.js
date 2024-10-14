@@ -6,6 +6,7 @@ import authRoutes from "./routes/auth.route.js";
 import postRoutes from "./routes/post.route.js";
 import userRoutes from "./routes/user.route.js";
 import messageRoutes from "./routes/message.route.js";
+import hireRoutes from "./routes/hire.route.js";
 import cookieParser from "cookie-parser";
 import { app, server } from "./socket/socket.js";
 
@@ -32,6 +33,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/post", postRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/message", messageRoutes);
+app.use("/api/hire", hireRoutes);
 
 // Middlewa Error Handle -----------------
 app.use((err, req, res, next) => {

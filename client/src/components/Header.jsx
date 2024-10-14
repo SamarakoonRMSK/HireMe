@@ -105,7 +105,7 @@ export default function Header() {
             Home
           </Navbar.Link>
         </Link>
-        {currentUser.role === "customer" && (
+        {currentUser && currentUser.role === "customer" && (
           <Link to="/drivers">
             <Navbar.Link as={"div"} active={location.pathname == "/drivers"}>
               Hire Driver

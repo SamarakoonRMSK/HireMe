@@ -8,6 +8,7 @@ import VacancyPage from "./pages/VacancyPage";
 import Dashboard from "./pages/Dashboard";
 import Message from "./pages/Message";
 import AllDrivers from "./pages/AllDrivers";
+import HireDriver from "./pages/HireDriver";
 
 export default function App() {
   return (
@@ -22,6 +23,7 @@ export default function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/message" element={<Message />} />
         <Route path="/drivers" element={<AllDrivers />} />
+        <Route path="/hire/:driverId" element={<HireDriver />} />
       </Routes>
     </BrowserRouter>
   );
