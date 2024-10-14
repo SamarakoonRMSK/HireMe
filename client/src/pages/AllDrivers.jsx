@@ -81,6 +81,27 @@ export default function AllDrivers() {
     fetchPosts();
   }, [location.search]);
 
+  const handleShowMore = async () => {
+    const numberOfPosts = drivers.length;
+    const startIndex = numberOfPosts;
+    const urlParams = new URLSearchParams(location.search);
+    urlParams.set("startIndex", startIndex);
+    const searchQuery = urlParams.toString();
+    const res = await fetch(`/api/user/getusers?${searchQuery}`);
+    if (!res.ok) {
+      return;
+    }
+    if (res.ok) {
+      const data = await res.json();
+      setPosts([...drivers, ...data.users]);
+      if (data.users.length === 9) {
+        setShowMore(true);
+      } else {
+        setShowMore(false);
+      }
+    }
+  };
+
   console.log(drivers);
 
   return (
@@ -167,7 +188,7 @@ export default function AllDrivers() {
             </Table>
             {showMore && (
               <button
-                // onClick={handleShowMore}
+                onClick={handleShowMore}
                 className="w-full text-teal-500 self-center text-sm py-7"
               >
                 Show more
