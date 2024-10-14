@@ -95,12 +95,18 @@ export const getusers = async (req, res, next) => {
           avgRate: { $avg: "$rate" },
         },
       },
-      {
-        $sort: { avgRate: sortDirection, createdAt: sortDirection },
-      },
-      { $skip: startIndex },
-      { $limit: limit },
     ];
+
+    if (parseInt(req.query.rate) === 1) {
+      aggregatePipeline.push({
+        $sort: { avgRate: -1 },
+      });
+    } else {
+      aggregatePipeline.push({
+        $sort: { createdAt: sortDirection },
+      });
+    }
+    aggregatePipeline.push({ $skip: startIndex }, { $limit: limit });
 
     const users = await User.aggregate(aggregatePipeline);
 
