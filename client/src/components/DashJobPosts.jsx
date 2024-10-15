@@ -58,21 +58,23 @@ export default function DashJobPosts() {
               <Table.HeadCell>Vehicle Type</Table.HeadCell>
               <Table.HeadCell>Amount</Table.HeadCell>
             </Table.Head>
-            {userPosts.map((post) => (
-              <Table.Body key={post._id} className="divide-y">
-                <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-                  <Table.Cell>
-                    <Link to={`/vacancy/${post._id}`}>{post.title}</Link>
-                  </Table.Cell>
+            {userPosts
+              .filter((post) => post.status !== true)
+              .map((post) => (
+                <Table.Body key={post._id} className="divide-y">
+                  <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
+                    <Table.Cell>
+                      <Link to={`/vacancy/${post._id}`}>{post.title}</Link>
+                    </Table.Cell>
 
-                  <Table.Cell>{post.from}</Table.Cell>
-                  <Table.Cell>{post.to}</Table.Cell>
-                  <Table.Cell>{post.applicants.length}</Table.Cell>
-                  <Table.Cell>{post.vType}</Table.Cell>
-                  <Table.Cell>{post.price}</Table.Cell>
-                </Table.Row>
-              </Table.Body>
-            ))}
+                    <Table.Cell>{post.from}</Table.Cell>
+                    <Table.Cell>{post.to}</Table.Cell>
+                    <Table.Cell>{post.applicants.length}</Table.Cell>
+                    <Table.Cell>{post.vType}</Table.Cell>
+                    <Table.Cell>{post.price}</Table.Cell>
+                  </Table.Row>
+                </Table.Body>
+              ))}
           </Table>
           {showMore && (
             <button

@@ -8,6 +8,7 @@ export default function VacancyPage() {
   const [post, setPost] = useState(null);
   const [applyError, setApplyError] = useState(null);
   const { currentUser } = useSelector((state) => state.userSlice);
+  const [createError, setCreateError] = useState(null);
 
   useEffect(() => {
     const getPost = async () => {
@@ -27,7 +28,7 @@ export default function VacancyPage() {
     getPost();
   }, [postId]);
 
-  console.log(post);
+  // console.log(post);
   const handleApply = async () => {
     const userData = {
       image: currentUser.profilePicture,
@@ -56,6 +57,42 @@ export default function VacancyPage() {
       }
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const hireDriver = async (driverId) => {
+    try {
+      const hireData = {
+        from: post.from,
+        to: post.to,
+        duration: post.duration,
+        vType: post.vType,
+        price: post.price,
+        postId: post._id,
+        return: post.return,
+      };
+      const res = await fetch(
+        `/api/hire/create/${currentUser._id}/${driverId}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(hireData),
+        }
+      );
+
+      const data = await res.json();
+      console.log(data);
+
+      if (!res.ok) {
+        setCreateError(data.message);
+        return;
+      }
+      if (res.ok) {
+        setCreateError(null);
+        navigate(`/`);
+      }
+    } catch (error) {
+      setCreateError(error);
     }
   };
 
@@ -138,10 +175,10 @@ export default function VacancyPage() {
                       {currentUser && currentUser.role === "customer" && (
                         <Table.Cell>
                           <span
-                            // onClick={() => {
-
-                            // }}
                             className="font-medium text-blue-500 hover:underline cursor-pointer"
+                            onClick={() => {
+                              hireDriver(user.userId);
+                            }}
                           >
                             Hire
                           </span>
@@ -151,6 +188,11 @@ export default function VacancyPage() {
                   </Table.Body>
                 ))}
             </Table>
+            {createError && (
+              <div className="pt-3">
+                <Alert color="failure">{createError}</Alert>
+              </div>
+            )}
           </div>
         </div>
       </div>

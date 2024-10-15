@@ -1,6 +1,7 @@
 import { errorHandler } from "../utils/error.js";
 import Hire from "../models/hire.model.js";
 import User from "../models/user.model.js";
+import Post from "../models/post.model.js";
 
 export const createHire = async (req, res, next) => {
   try {
@@ -33,6 +34,14 @@ export const createHire = async (req, res, next) => {
       customerId: req.user.id,
       driverId: req.params.driverId,
     });
+
+    if (req.body.postId) {
+      await Post.findByIdAndUpdate(
+        req.body.postId,
+        { $set: { status: true } },
+        { new: true }
+      );
+    }
     const data = await newHire.save();
     res.status(201).json(data);
   } catch (error) {
