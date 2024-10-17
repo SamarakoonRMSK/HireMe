@@ -15,15 +15,20 @@ export default function App() {
     <BrowserRouter>
       <Header />
       <Routes>
+        {/* all */}
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/signin" element={<Signin />} />
-        <Route path="/create-vacancy" element={<CreatePost />} />
+        {/* both */}
         <Route path="/vacancy/:postId" element={<VacancyPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/message" element={<Message />} />
+        {/* customer */}
+        <Route path="/create-vacancy" element={<CreatePost />} />
         <Route path="/drivers" element={<AllDrivers />} />
         <Route path="/hire/:driverId" element={<HireDriver />} />
+        {/* driver */}
+        {/* admin */}
       </Routes>
     </BrowserRouter>
   );

@@ -112,6 +112,13 @@ export default function Header() {
             </Navbar.Link>
           </Link>
         )}
+        {currentUser && (
+          <Link to="/message">
+            <Navbar.Link as={"div"} active={location.pathname == "/message"}>
+              Message
+            </Navbar.Link>
+          </Link>
+        )}
         <Navbar.Link as={"div"}>About</Navbar.Link>
         <Navbar.Link as={"div"}>Services</Navbar.Link>
 

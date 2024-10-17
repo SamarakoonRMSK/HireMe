@@ -47,7 +47,7 @@ export const sendMessage = async (req, res, next) => {
         participants: [senderId, req.params.receiverId],
       });
 
-      const newUser = await User.findById(receiverId);
+      const newUser = await User.findById(senderId);
 
       const socketId = getReceiverSocketId(receiverId);
       if (socketId) {

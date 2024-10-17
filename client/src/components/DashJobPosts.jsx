@@ -20,7 +20,9 @@ export default function DashJobPosts() {
             setShowMore(false);
           }
         }
-      } catch (error) {}
+      } catch (error) {
+        console.log(error);
+      }
     };
     if (currentUser && currentUser.role === "customer") {
       fetchPosts();

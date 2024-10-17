@@ -59,15 +59,26 @@ export default function DashSlidebar() {
             </Sidebar.Item>
           </Link>
           {currentUser && currentUser.role === "customer" && (
-            <Link to="/dashboard?tab=jobs">
-              <Sidebar.Item
-                icon={HiDocumentText}
-                active={"jobs" === searchParams.get("tab")}
-                as="div"
-              >
-                Your Job Posts
-              </Sidebar.Item>
-            </Link>
+            <>
+              <Link to="/dashboard?tab=jobs">
+                <Sidebar.Item
+                  icon={HiDocumentText}
+                  active={"jobs" === searchParams.get("tab")}
+                  as="div"
+                >
+                  Your Job Posts
+                </Sidebar.Item>
+              </Link>
+              <Link to="/dashboard?tab=hires">
+                <Sidebar.Item
+                  icon={HiDocumentText}
+                  active={"hires" === searchParams.get("tab")}
+                  as="div"
+                >
+                  Your Hires
+                </Sidebar.Item>
+              </Link>
+            </>
           )}
           <Sidebar.Item
             icon={HiArrowSmRight}

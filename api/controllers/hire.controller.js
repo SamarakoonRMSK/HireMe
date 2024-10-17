@@ -48,3 +48,21 @@ export const createHire = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getCustomerHires = async (req, res, next) => {
+  try {
+    if (req.user.role !== "customer") {
+      return next(403, "You are not allowed to get Hires");
+    }
+    if (req.user.id !== req.params.customerId) {
+      return next(403, "You are not allowed to get hires");
+    }
+    const hires = await Hire.find({
+      customerId: req.params.customerId,
+      status: { $ne: "Completed" },
+    });
+    res.status(200).json(hires);
+  } catch (error) {
+    next(error);
+  }
+};
