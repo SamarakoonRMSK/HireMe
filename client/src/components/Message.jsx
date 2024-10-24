@@ -36,7 +36,9 @@ export default function Message() {
   useEffect(() => {
     if (socket) {
       socket.on("newMessage", (message) => {
-        setMessages((prevMessages) => [...prevMessages, message]);
+        if (message.senderId === receiverId) {
+          setMessages((prevMessages) => [...prevMessages, message]);
+        }
       });
 
       return () => {

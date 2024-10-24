@@ -7,6 +7,7 @@ import postRoutes from "./routes/post.route.js";
 import userRoutes from "./routes/user.route.js";
 import messageRoutes from "./routes/message.route.js";
 import hireRoutes from "./routes/hire.route.js";
+import payRoutes from "./routes/payment.route.js";
 import cookieParser from "cookie-parser";
 import { app, server } from "./socket/socket.js";
 
@@ -34,6 +35,7 @@ app.use("/api/post", postRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/message", messageRoutes);
 app.use("/api/hire", hireRoutes);
+app.use("/api/pay", payRoutes);
 
 // Middlewa Error Handle -----------------
 app.use((err, req, res, next) => {
@@ -45,16 +47,6 @@ app.use((err, req, res, next) => {
     message,
   });
 });
-
-// saman3@gmail.com - 66eeb415186cf4ea50484c52
-// saman4@gmail.com - 66eeb45e7b1068d3b6cf1e3c
-
-// Remove user on disconnect
-//   socket.on("disconnect", () => {
-//     console.log("User disconnected");
-//     removeUser(socket.id);
-//   });
-// });
 
 server.listen(process.env.PORT || 3000, () => {
   console.log(`Server is running on port ${process.env.PORT}`);

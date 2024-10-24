@@ -48,10 +48,13 @@ export const sendMessage = async (req, res, next) => {
       });
 
       const newUser = await User.findById(senderId);
+      const sender = await User.findById(receiverId);
 
       const socketId = getReceiverSocketId(receiverId);
-      if (socketId) {
+      const userSocketId = getReceiverSocketId(senderId);
+      if (socketId && userSocketId) {
         io.to(socketId).emit("newUser", newUser);
+        io.to(userSocketId).emit("newUser", sender);
       }
     }
     const newMessage = new Message({
