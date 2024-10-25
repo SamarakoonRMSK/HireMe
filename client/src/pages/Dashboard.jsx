@@ -4,6 +4,7 @@ import DashSlidebar from "../components/DashSlidebar";
 import DashJobPosts from "../components/DashJobPosts";
 import { useSelector } from "react-redux";
 import DashCustomerHires from "../components/DashCustomerHires";
+import DashCompletedHires from "../components/DashCompletedHires";
 
 export default function Dashboard() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -20,6 +21,9 @@ export default function Dashboard() {
       {"hires" === searchParams.get("tab") &&
         currentUser &&
         currentUser.role === "customer" && <DashCustomerHires />}
+      {"completed" === searchParams.get("tab") &&
+        currentUser &&
+        currentUser.role === "customer" && <DashCompletedHires />}
     </div>
   );
 }

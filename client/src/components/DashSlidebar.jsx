@@ -78,6 +78,15 @@ export default function DashSlidebar() {
                   Your Hires
                 </Sidebar.Item>
               </Link>
+              <Link to="/dashboard?tab=completed">
+                <Sidebar.Item
+                  icon={HiDocumentText}
+                  active={"completed" === searchParams.get("tab")}
+                  as="div"
+                >
+                  Completed Hires
+                </Sidebar.Item>
+              </Link>
             </>
           )}
           <Sidebar.Item

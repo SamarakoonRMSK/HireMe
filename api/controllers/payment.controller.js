@@ -8,6 +8,7 @@ const stripe = stripePackage(process.env.STRIPE);
 export const checkout = async (req, res, next) => {
   try {
     const { hire } = req.body;
+    console.log(hire);
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
@@ -24,8 +25,8 @@ export const checkout = async (req, res, next) => {
         },
       ],
       mode: "payment",
-      success_url: "http://localhost:5173/success",
-      cancel_url: "http://localhost:5173/cancel",
+      success_url: `http://localhost:5173/success/${hire._id}`,
+      cancel_url: "http://localhost:5173/dashboard?tab=hires",
     });
 
     res.json({ id: session.id });

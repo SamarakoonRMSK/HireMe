@@ -9,6 +9,7 @@ import Dashboard from "./pages/Dashboard";
 import Message from "./pages/Message";
 import AllDrivers from "./pages/AllDrivers";
 import HireDriver from "./pages/HireDriver";
+import Success from "./pages/Success";
 
 export default function App() {
   return (
@@ -27,6 +28,7 @@ export default function App() {
         <Route path="/create-vacancy" element={<CreatePost />} />
         <Route path="/drivers" element={<AllDrivers />} />
         <Route path="/hire/:driverId" element={<HireDriver />} />
+        <Route path="/success/:hireId" element={<Success />} />
         {/* driver */}
         {/* admin */}
       </Routes>

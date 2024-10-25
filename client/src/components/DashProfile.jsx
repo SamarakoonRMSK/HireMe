@@ -184,8 +184,6 @@ export default function DashProfile() {
     }
   };
 
-  console.log(formData);
-
   return (
     <div className="md:max-w-3xl max-w-sm mx-auto p-3 w-full">
       <h1 className="my-7 text-center font-semibold text-3xl">Profile</h1>
