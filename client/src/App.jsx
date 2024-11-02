@@ -10,6 +10,7 @@ import Message from "./pages/Message";
 import AllDrivers from "./pages/AllDrivers";
 import HireDriver from "./pages/HireDriver";
 import Success from "./pages/Success";
+import Jobs from "./pages/Jobs";
 
 export default function App() {
   return (
@@ -30,6 +31,7 @@ export default function App() {
         <Route path="/hire/:driverId" element={<HireDriver />} />
         <Route path="/success/:hireId" element={<Success />} />
         {/* driver */}
+        <Route path="/jobs" element={<Jobs />} />
         {/* admin */}
       </Routes>
     </BrowserRouter>

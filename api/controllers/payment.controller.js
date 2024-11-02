@@ -8,7 +8,6 @@ const stripe = stripePackage(process.env.STRIPE);
 export const checkout = async (req, res, next) => {
   try {
     const { hire } = req.body;
-    console.log(hire);
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
@@ -31,7 +30,6 @@ export const checkout = async (req, res, next) => {
 
     res.json({ id: session.id });
   } catch (error) {
-    console.error("Error creating checkout session:", error);
-    res.status(500).json({ error: "Something went wrong!" });
+    next(error);
   }
 };

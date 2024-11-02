@@ -196,7 +196,7 @@ export default function AllDrivers() {
             )}
           </>
         ) : (
-          <p>You have no posts</p>
+          <p>No drivers</p>
         )}
       </div>
     </div>

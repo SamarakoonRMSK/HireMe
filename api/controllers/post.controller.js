@@ -88,3 +88,27 @@ export const getPosts = async (req, res, next) => {
     next(error);
   }
 };
+
+export const filterPosts = async (req, res, next) => {
+  try {
+    if (req.user.role !== "driver") {
+      return next(errorHandler(403, "You are not allowed to apply vacancy!"));
+    }
+
+    const { from, to, duration, return: isReturn, vType, price } = req.query;
+
+    let filter = { status: false };
+    if (from) filter.from = from;
+    if (to) filter.to = to;
+    if (duration) filter.duration = { $gt: Number(duration) - 1 };
+    if (isReturn !== undefined) filter.return = isReturn === "true";
+    if (vType) filter.vType = vType;
+    if (price) filter.price = { $gt: Number(price) - 1 };
+
+    const posts = await Post.find(filter);
+
+    res.status(200).json(posts);
+  } catch (error) {
+    next(error);
+  }
+};
