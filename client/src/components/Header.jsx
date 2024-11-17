@@ -28,7 +28,7 @@ export default function Header() {
   };
 
   return (
-    <Navbar fluid rounded>
+    <Navbar fluid className="z-10 sticky top-0 bg-transparent">
       <Link to="/">
         <Navbar.Brand as={"div"}>
           <img
