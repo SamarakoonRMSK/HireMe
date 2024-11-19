@@ -29,8 +29,6 @@ export default function DashCustomerHires() {
     }
   }, [currentUser._id]);
   const makePayment = async (hire) => {
-    console.log(hire);
-
     const stripe = await loadStripe(
       "pk_test_51QDSHeHb7zo8fEZFbxxkIwWyjKctjLwBEKBgMy4qfwiIqonZaYvKPbo3iLPzyRt2JQPeHVXp2oYejLH2CXwDQ90H00ZZcndNl2"
     );

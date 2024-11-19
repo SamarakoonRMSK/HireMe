@@ -11,7 +11,7 @@ export default function Home() {
       <section className=" text-white">
         <div className="relative ">
           <svg
-            className="lg:w-full min-h-screen max-lg:hidden"
+            className="lg:w-full max-h-screen max-lg:hidden"
             viewBox="0 0 982.471111111111 552.64"
             // style={{ width: "82.471px", height: "552.64px" }} // Updated style prop
             xmlns="http://www.w3.org/2000/svg"

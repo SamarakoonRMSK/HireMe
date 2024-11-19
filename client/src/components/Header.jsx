@@ -53,15 +53,18 @@ export default function Header() {
                   img={currentUser.profilePicture}
                   rounded
                 />
-                <Badge
-                  icon={HiCheck}
-                  style={{
-                    position: "absolute",
-                    bottom: 6,
-                    right: 6,
-                    transform: "translate(50%, 50%)", // to place the badge at the corner
-                  }}
-                />
+                {((currentUser && currentUser.role === "admin") ||
+                  currentUser.isVerify) && (
+                  <Badge
+                    icon={HiCheck}
+                    style={{
+                      position: "absolute",
+                      bottom: 6,
+                      right: 6,
+                      transform: "translate(50%, 50%)", // to place the badge at the corner
+                    }}
+                  />
+                )}
               </div>
             }
           >

@@ -137,3 +137,34 @@ export const getusers = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getAllDrivers = async (req, res, next) => {
+  if (req.user.role !== "admin") {
+    return next(errorHandler(403, "You are not allowed to see all drivers"));
+  }
+  try {
+    const drivers = await User.find({ role: "driver" });
+    const driversWithoutPass = drivers.map((driver) => {
+      const { password, ...rest } = driver;
+      return driver;
+    });
+    res.status(200).json(driversWithoutPass);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const verifyDriver = async (req, res, next) => {
+  if (req.user.role !== "admin") {
+    return next(errorHandler(403, "You are not allowed to see all drivers"));
+  }
+  try {
+    const driver = await User.findByIdAndUpdate(req.params.driverId, {
+      isVerify: true,
+    });
+    const { password, ...rest } = driver;
+    res.status(200).json(rest);
+  } catch (error) {
+    next(error);
+  }
+};

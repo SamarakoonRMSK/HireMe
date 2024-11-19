@@ -7,6 +7,7 @@ import {
   HiDocumentText,
   HiOutlineUserGroup,
   HiAnnotation,
+  HiUsers,
 } from "react-icons/hi";
 import { Link, useSearchParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -38,15 +39,26 @@ export default function DashSlidebar() {
       <Sidebar.Items>
         <Sidebar.ItemGroup>
           {currentUser && currentUser.role === "admin" && (
-            <Link to="/dashboard?tab=dash">
-              <Sidebar.Item
-                icon={HiChartPie}
-                as="div"
-                active={"dash" === searchParams.get("tab")}
-              >
-                Dashboard
-              </Sidebar.Item>
-            </Link>
+            <>
+              <Link to="/dashboard?tab=dash">
+                <Sidebar.Item
+                  icon={HiChartPie}
+                  as="div"
+                  active={"dash" === searchParams.get("tab")}
+                >
+                  Dashboard
+                </Sidebar.Item>
+              </Link>
+              <Link to="/dashboard?tab=verify">
+                <Sidebar.Item
+                  icon={HiUsers}
+                  as="div"
+                  active={"verify" === searchParams.get("tab")}
+                >
+                  Verify Users
+                </Sidebar.Item>
+              </Link>
+            </>
           )}
           <Link to="/dashboard?tab=profile">
             <Sidebar.Item
