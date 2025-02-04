@@ -56,6 +56,8 @@ export default function Jobs() {
         duration,
         price,
       });
+    } else {
+      urlParams.set("return", false);
     }
 
     const fetchPosts = async () => {
@@ -77,8 +79,8 @@ export default function Jobs() {
   }, [location.search]);
 
   return (
-    <div className="flex flex-col md:flex-row">
-      <div className="p-7 border-b md:border-r md:min-h-screen border-gray-500">
+    <div className="flex flex-col md:flex-row ">
+      <div className="p-7 border-b md:border-r md:min-h-[91vh] border-gray-500">
         <form className="flex flex-col gap-8" onSubmit={handleSubmit}>
           <div className="flex justify-between  items-center gap-2">
             <label className="whitespace-nowrap font-semibold">
@@ -150,7 +152,7 @@ export default function Jobs() {
           </Button>
         </form>
       </div>
-      <div className="table-auto overflow-x-scroll md:w-full md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500">
+      <div className="table-auto overflow-x-scroll md:w-full md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500 ">
         {currentUser && jobs.length > 0 ? (
           <>
             <Table hoverable className="shadow-md ">

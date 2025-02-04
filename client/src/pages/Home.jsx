@@ -36,7 +36,10 @@ export default function Home() {
             ></circle>
           </svg>
 
-          <div className="lg:absolute max-lg:bg-yellow-200 max-lg:p-20 lg:top-52 lg:right-20 lg:pr-10 relative text-gray-700">
+          <div
+            data-aos="fade-up"
+            className="lg:absolute max-lg:bg-yellow-200 max-lg:p-20 lg:top-52 lg:right-20 lg:pr-10 relative text-gray-700"
+          >
             <div className=" space-y-6 text-center lg:text-left">
               <h1 className="max-lg:text-2xl lg:text-4xl font-bold">
                 Book Professional Drivers for <br />
