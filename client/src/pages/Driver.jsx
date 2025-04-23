@@ -1,4 +1,4 @@
-import { Avatar, Rating, Badge, Tabs, TabItem, Button, Card } from 'flowbite-react';
+import { Avatar, Rating, Badge, Tabs, TabItem, Button, Card, Modal } from 'flowbite-react';
 import { useEffect, useState } from 'react';
 import { FaCar, FaMotorcycle, FaShuttleVan, FaBiking } from 'react-icons/fa';
 import { HiDocumentDownload, HiCheckCircle, HiMail, HiLocationMarker, HiCalendar } from 'react-icons/hi';
@@ -11,7 +11,7 @@ export default function Driver() {
     const { driverId } = useParams();
     const [driver,setDriver] = useState(null);
     const [reviews,setReviews] = useState([]);
-    // const [location,setLocation] = useState([]);
+    const [isDisplay,setIsDisplay] = useState(false);
 
     useEffect(()=>{
         const getDriver = async()=>{
@@ -161,10 +161,6 @@ export default function Driver() {
                     <p className="font-medium">Driver's License</p>
                     <p className="text-sm text-gray-500">{driver.licenceNumber}</p>
                   </div>
-                  <Button size="xs" gradientMonochrome="info">
-                    <HiDocumentDownload className="mr-2" />
-                    View
-                  </Button>
                 </div>
                 
                 <div className="flex justify-between items-center p-3 bg-purple-50 rounded-lg">
@@ -172,7 +168,7 @@ export default function Driver() {
                     <p className="font-medium">Police Report</p>
                     <p className="text-sm text-gray-500">Verified background check</p>
                   </div>
-                  <Button size="xs" gradientMonochrome="purple">
+                  <Button size="xs" gradientMonochrome="purple" onClick={()=>setIsDisplay(true)}>
                     <HiDocumentDownload className="mr-2" />
                     View
                   </Button>
@@ -280,6 +276,14 @@ export default function Driver() {
           </Tabs>
         </Card>
       </div>}
+      <Modal dismissible show={isDisplay} onClose={() => setIsDisplay(false)}>
+              <Modal.Header>Driver Police Report</Modal.Header>
+              <Modal.Body>
+                <div className="space-y-6">
+                  <img src={driver?.policeReport} />
+                </div>
+              </Modal.Body>
+            </Modal>
     </div>
   )
 }

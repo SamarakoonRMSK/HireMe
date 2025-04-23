@@ -4,7 +4,7 @@ const notificationSchema = new mongoose.Schema(
   {
     customerId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Violation",
+      ref: "User",
       required: true,
     },
     description: {

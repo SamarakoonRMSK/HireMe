@@ -32,12 +32,13 @@ export default function Header() {
   useEffect(() => {
     const fetchLatestNotifications = async () => {
       try {
-        const response = await fetch("/api/v1/notification/latest");
-
+        const response = await fetch("/api/notification/latest");
+        
         if (!response.ok) throw new Error("Failed to fetch notifications");
-
+        
         const data = await response.json();
         setNotifications(data.data || []); 
+        console.log("--------------",data.data);
       } catch (error) {
         console.error("Error fetching notifications:", error);
         setNotifications([]); 
@@ -59,7 +60,7 @@ export default function Header() {
           <div key={notifi._id} className="px-3 py-2 flex justify-between">
             {" "}
             {/* Add `key`! */}
-            <p>{notifi.customerId} {notifi.description}</p>
+            <p>{notifi.description} from {notifi.customerId.username}</p>
             <p>{notifi.price}</p>
           </div>
         ))
