@@ -6,6 +6,8 @@ import {
   signout,
   updateUser,
   verifyDriver,
+  getDriver,
+  getCustomers
 } from "../controllers/user.controller.js";
 
 const router = express.Router();
@@ -13,6 +15,8 @@ const router = express.Router();
 router.post("/signout", signout);
 router.put("/update/:userId", verifyToken, updateUser);
 router.get("/getusers", verifyToken, getusers);
+router.get("/getcustomers", verifyToken, getCustomers);
+router.get("/driver/:driverId",verifyToken,getDriver)
 router.get("/alldrivers", verifyToken, getAllDrivers);
 router.put("/verifydriver/:driverId", verifyToken, verifyDriver);
 

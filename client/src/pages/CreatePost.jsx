@@ -110,19 +110,12 @@ export default function CreatePost() {
           onChange={(e) => setFormData({ ...formData, vType: e.target.value })}
         >
           <option value="">Select your vehical type</option>
-          <option value="A1">A1</option>
-          <option value="A">A</option>
-          <option value="B1">B1</option>
-          <option value="B">B</option>
-          <option value="C1">C1</option>
-          <option value="C">C</option>
-          <option value="CE">CE</option>
-          <option value="D1">D1</option>
-          <option value="D">D</option>
-          <option value="DE">DE</option>
-          <option value="G1">G1</option>
-          <option value="G">G</option>
-          <option value="J">J</option>
+          <option value="Bike">Bike</option>
+          <option value="Rickshaw">Rickshaw</option>
+          <option value="Car">Car</option>
+          <option value="Van">Van</option>
+          <option value="Bus">Bus</option>
+          <option value="Truck">Truck</option>
         </Select>
         <TextInput
           type="number"

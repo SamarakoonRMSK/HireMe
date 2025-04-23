@@ -73,9 +73,10 @@ export const updateUser = async (req, res, next) => {
 };
 
 export const getusers = async (req, res, next) => {
-  if (req.user.role !== "customer") {
+  if (req.user.role === "driver") {
     return next(errorHandler(403, "You are not allowed to see all users"));
   }
+  
 
   try {
     const startIndex = parseInt(req.query.startIndex) || 0;
@@ -137,6 +138,71 @@ export const getusers = async (req, res, next) => {
     next(error);
   }
 };
+export const getCustomers = async (req, res, next) => {
+  if (req.user.role === "customer") {
+    return next(errorHandler(403, "You are not allowed to see all users"));
+  }
+  
+
+  try {
+    const startIndex = parseInt(req.query.startIndex) || 0;
+    const limit = parseInt(req.query.limit) || 9;
+    const sortDirection = req.query.sort === "asc" ? 1 : -1;
+
+    const filters = { role: "customer" };
+
+    const aggregatePipeline = [
+      { $match: filters },
+    ];
+
+    aggregatePipeline.push({
+        $sort: { createdAt: sortDirection },
+      });
+    aggregatePipeline.push({ $skip: startIndex }, { $limit: limit });
+
+    const users = await User.aggregate(aggregatePipeline);
+
+    const usersWithoutPassword = users.map((user) => {
+      const { password, ...rest } = user;
+      return rest;
+    });
+
+    const totalUsers = await User.countDocuments({ role: "customer" });
+
+    const now = new Date();
+    const oneMonthAgo = new Date(
+      now.getFullYear(),
+      now.getMonth() - 1,
+      now.getDate()
+    );
+    const lastMonthUsers = await User.countDocuments({
+      role: "customer",
+      createdAt: { $gte: oneMonthAgo },
+    });
+
+    res.status(200).json({
+      users: usersWithoutPassword,
+      totalUsers,
+      lastMonthUsers,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getDriver = async (req,res,next)=>{
+  try {
+    const driver = await User.findOne({ _id:req.params.driverId,role: "driver" });
+    if(!driver){
+      return next(errorHandler(404,"Driver id not exist"));
+    }
+    const { password, ...rest } = driver._doc;
+    res.status(200).json(rest);
+
+  } catch (error) {
+    next(error);
+  }
+}
 
 export const getAllDrivers = async (req, res, next) => {
   if (req.user.role !== "admin") {

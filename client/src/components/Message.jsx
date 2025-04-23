@@ -76,10 +76,10 @@ export default function Message() {
 
   return (
     <>
-      <header className="bg-gray-300 p-4 text-gray-700 h-[8vh]">
+      <header className="bg-blue-300 p-4 text-gray-700 h-[8vh]">
         <h1 className="text-2xl font-semibold">Message Box</h1>
       </header>
-      <div className="overflow-y-auto p-4 pb-36 h-[84vh] ">
+      <div className="overflow-y-auto p-4 pb-36 h-[75vh] bg-blue-100">
         {messages &&
           messages.length > 0 &&
           messages.map((message, index) => (
@@ -102,16 +102,16 @@ export default function Message() {
             </div>
           ))}
       </div>
-      <div className="flex items-center h-[8vh] p-4">
+      <div className="flex items-center h-[8vh] p-4 bg-blue-100">
         <input
           type="text"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           placeholder="Type a message..."
-          className="w-full p-2 rounded-md border border-gray-400 focus:outline-none focus:border-blue-500"
+          className="w-full p-2 rounded-md border bg-blue-100 border-gray-400 focus:outline-none focus:border-blue-500"
         />
         <button
-          className="bg-indigo-500 text-white px-4 py-2 rounded-md ml-2"
+          className="bg-indigo-500 text-white  px-4 py-2 rounded-md ml-2"
           onClick={sendMessage}
         >
           Send

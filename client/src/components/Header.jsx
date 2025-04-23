@@ -1,15 +1,17 @@
-import { Avatar, Dropdown, Navbar, Button } from "flowbite-react";
+import { Avatar, Dropdown, Navbar, Button, Popover } from "flowbite-react";
 import logo from "../assets/logo.png";
 import { Badge } from "flowbite-react";
 import { HiCheck, HiClock } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { signoutSuccess } from "../store/user/userSlice";
+import { useEffect, useState } from "react";
 
 export default function Header() {
   const location = useLocation();
   const { currentUser } = useSelector((state) => state.userSlice);
   const dispatch = useDispatch();
+  const [notifications, setNotifications] = useState([]);
 
   const handleSignout = async () => {
     try {
@@ -27,8 +29,48 @@ export default function Header() {
     }
   };
 
+  useEffect(() => {
+    const fetchLatestNotifications = async () => {
+      try {
+        const response = await fetch("/api/v1/notification/latest");
+
+        if (!response.ok) throw new Error("Failed to fetch notifications");
+
+        const data = await response.json();
+        setNotifications(data.data || []); 
+      } catch (error) {
+        console.error("Error fetching notifications:", error);
+        setNotifications([]); 
+      }
+    };
+
+    fetchLatestNotifications();
+  }, []);
+
+  const content = (
+    <div className="w-96 text-sm text-gray-500 dark:text-gray-400">
+      <div className="border-b border-gray-200 bg-gray-100 px-3 py-2 dark:border-gray-600 dark:bg-gray-700">
+        <h3 className="font-semibold text-gray-900 dark:text-white">
+          Notification
+        </h3>
+      </div>
+      {notifications.length >= 1 ? (
+        notifications.map((notifi) => (
+          <div key={notifi._id} className="px-3 py-2 flex justify-between">
+            {" "}
+            {/* Add `key`! */}
+            <p>{notifi.customerId} {notifi.description}</p>
+            <p>{notifi.price}</p>
+          </div>
+        ))
+      ) : (
+        <div className="px-3 py-2">No notifications yet.</div>
+      )}
+    </div>
+  );
+
   return (
-    <Navbar fluid className="z-10 sticky top-0 bg-transparent">
+    <Navbar fluid className="z-10 sticky top-0 bg-slate-100">
       <Link to="/">
         <Navbar.Brand as={"div"}>
           <img
@@ -84,7 +126,6 @@ export default function Header() {
               </Link>
             )}
 
-            <Dropdown.Item>Earnings</Dropdown.Item>
             <Dropdown.Divider />
             <Dropdown.Item onClick={handleSignout}>Sign out</Dropdown.Item>
           </Dropdown>
@@ -122,7 +163,7 @@ export default function Header() {
             </Navbar.Link>
           </Link>
         )}
-        {currentUser && (
+        {currentUser && currentUser.role!=="admin" && (
           <Link to="/message">
             <Navbar.Link as={"div"} active={location.pathname == "/message"}>
               Message
@@ -130,7 +171,14 @@ export default function Header() {
           </Link>
         )}
         <Navbar.Link as={"div"}>About</Navbar.Link>
-        <Navbar.Link as={"div"}>Services</Navbar.Link>
+        {currentUser && currentUser.role === "driver" && (
+          <Popover content={content} placement="bottom">
+          <div className="flex cursor-pointer">
+          Notification
+          </div>
+        </Popover>
+ 
+        )}
 
         <Navbar.Link as={"div"}>Contact</Navbar.Link>
       </Navbar.Collapse>

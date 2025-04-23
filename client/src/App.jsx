@@ -11,6 +11,9 @@ import AllDrivers from "./pages/AllDrivers";
 import HireDriver from "./pages/HireDriver";
 import Success from "./pages/Success";
 import Jobs from "./pages/Jobs";
+import Footer from "./components/Footer";
+import GoogleMap from "./pages/GoogleMap";
+import Driver from "./pages/Driver";
 
 export default function App() {
   return (
@@ -21,6 +24,7 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/signin" element={<Signin />} />
+        <Route path="/map" element={<GoogleMap />}  />
         {/* both */}
         <Route path="/vacancy/:postId" element={<VacancyPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
@@ -28,12 +32,14 @@ export default function App() {
         {/* customer */}
         <Route path="/create-vacancy" element={<CreatePost />} />
         <Route path="/drivers" element={<AllDrivers />} />
+        <Route path="/driver/:driverId" element={<Driver/>} />
         <Route path="/hire/:driverId" element={<HireDriver />} />
         <Route path="/success/:hireId" element={<Success />} />
         {/* driver */}
         <Route path="/jobs" element={<Jobs />} />
         {/* admin */}
       </Routes>
+      <Footer/>
     </BrowserRouter>
   );
 }

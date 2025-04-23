@@ -316,59 +316,59 @@ export default function DashProfile() {
             <div className="flex flex-col sm:items-center sm:justify-between sm:flex-row gap-2">
               <div className="flex sm:justify-center items-center">
                 <Checkbox
-                  id="A1"
-                  value="A1"
-                  defaultChecked={currentUser.vType.includes("A1")}
+                  id="Bike"
+                  value="Bike"
+                  defaultChecked={currentUser.vType.includes("Bike")}
                   onChange={handleCheckboxChange}
                 />
-                <Label className="ml-2">A1</Label>
+                <Label className="ml-2">Bike</Label>
               </div>
               <div className="flex sm:justify-center items-center">
                 <Checkbox
-                  id="A"
-                  value="A"
-                  defaultChecked={currentUser.vType.includes("A")}
+                  id="Rickshaw"
+                  value="Rickshaw"
+                  defaultChecked={currentUser.vType.includes("Rickshaw")}
                   onChange={handleCheckboxChange}
                 />
-                <Label className="ml-2">A</Label>
+                <Label className="ml-2">Rickshaw</Label>
               </div>
               <div className="flex sm:justify-center items-center">
                 <Checkbox
-                  id="B1"
-                  value="B1"
-                  defaultChecked={currentUser.vType.includes("B1")}
+                  id="Car"
+                  value="Car"
+                  defaultChecked={currentUser.vType.includes("Car")}
                   onChange={handleCheckboxChange}
                 />
-                <Label className="ml-2">B1</Label>
+                <Label className="ml-2">Car</Label>
               </div>
               <div className="flex sm:justify-center items-center">
                 <Checkbox
-                  id="B"
-                  value="B"
-                  defaultChecked={currentUser.vType.includes("B")}
+                  id="Van"
+                  value="Van"
+                  defaultChecked={currentUser.vType.includes("Van")}
                   onChange={handleCheckboxChange}
                 />
-                <Label className="ml-2">B</Label>
+                <Label className="ml-2">Van</Label>
               </div>
               <div className="flex sm:justify-center items-center">
                 <Checkbox
-                  id="C1"
-                  value="C1"
-                  defaultChecked={currentUser.vType.includes("C1")}
+                  id="Bus"
+                  value="Bus"
+                  defaultChecked={currentUser.vType.includes("Bus")}
                   onChange={handleCheckboxChange}
                 />
-                <Label className="ml-2">C1</Label>
+                <Label className="ml-2">Bus</Label>
               </div>
               <div className="flex sm:justify-center items-center">
                 <Checkbox
-                  id="C"
-                  value="C"
-                  defaultChecked={currentUser.vType.includes("C")}
+                  id="Truck"
+                  value="Truck"
+                  defaultChecked={currentUser.vType.includes("Truck")}
                   onChange={handleCheckboxChange}
                 />
-                <Label className="ml-2">C</Label>
+                <Label className="ml-2">Truck</Label>
               </div>
-              <div className="flex sm:justify-center items-center">
+              {/* <div className="flex sm:justify-center items-center">
                 <Checkbox
                   id="CE"
                   value="CE"
@@ -430,7 +430,7 @@ export default function DashProfile() {
                   onChange={handleCheckboxChange}
                 />
                 <Label className="ml-2">J</Label>
-              </div>
+              </div> */}
             </div>
             <div className="block">
               <Label value="Your Licence Number" />

@@ -42,12 +42,12 @@ export default function Message() {
 
   return (
     <div className="flex max-h-screen overflow-hidden">
-      <div className="w-1/4 bg-white border-r border-gray-300">
-        <header className="p-4 h-[8vh] border-b border-gray-300 flex justify-between items-center bg-indigo-400 text-black">
-          <h1 className="text-2xl font-semibold">Chat Web</h1>
+      <div className="w-1/4 bg-blue-100 border-r border-gray-300">
+        <header className="p-4 h-[8vh] border-b border-gray-300 flex justify-between items-center bg-blue-300 text-black">
+          <h1 className="text-2xl font-semibold">Users</h1>
         </header>
 
-        <div className="overflow-y-auto h-[90vh] p-3 mb-9 pb-20 bg-gray-100">
+        <div className="overflow-y-auto h-[75vh] p-3 mb-9 pb-20 bg-blue-100">
           {users &&
             users.length >= 1 &&
             users.map((user) => (

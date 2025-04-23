@@ -2,11 +2,13 @@ import mongoose from "mongoose";
 
 const HireSchema = new mongoose.Schema({
   customerId: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref:'User',
     required: true,
   },
   driverId: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref:'User',
     required: true,
   },
   from: {
@@ -43,7 +45,7 @@ const HireSchema = new mongoose.Schema({
   feedback: {
     type: String,
   },
-});
+},{ timestamps: true });
 
 const Hire = mongoose.model("Hire", HireSchema);
 export default Hire;

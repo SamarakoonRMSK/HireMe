@@ -1,4 +1,4 @@
-import { Button, Checkbox, Select, Table, TextInput } from "flowbite-react";
+import { Button, Checkbox, Rating, RatingStar, Select, Table, TextInput } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -160,15 +160,22 @@ export default function AllDrivers() {
                       {new Date(driver.createdAt).toLocaleDateString()}
                     </Table.Cell>
                     <Table.Cell>
-                      <img
-                        src={driver.profilePicture}
-                        alt="driver"
-                        className="w-16 h-16 object-cover rounded-full  bg-gray-500"
-                      />
+                      <Link to={`/driver/${driver._id}`}>
+                        <img
+                          src={driver.profilePicture}
+                          alt="driver"
+                          className="w-16 h-16 object-cover rounded-full  bg-gray-500"
+                        />
+                      </Link>
                     </Table.Cell>
 
                     <Table.Cell>{driver.fullName}</Table.Cell>
-                    <Table.Cell>{driver.avgRate.toFixed(1)}</Table.Cell>
+                    <Table.Cell>
+                      <Rating>
+                        <RatingStar />
+                        <p className="ml-2  font-semibold  dark:text-white">{(driver.avgRate || 0).toFixed(2)}</p>
+                      </Rating>
+                      </Table.Cell>
                     <Table.Cell>
                       <Link
                         className="text-teal-500 hover:underline"
@@ -178,7 +185,7 @@ export default function AllDrivers() {
                       </Link>
                     </Table.Cell>
                     <Table.Cell>
-                      <Link className="text-red-600 hover:underline" to="/">
+                      <Link className="text-red-600 hover:underline" to={`/hire/${driver._id}`}>
                         <span className="font-semibold">Hire</span>
                       </Link>
                     </Table.Cell>

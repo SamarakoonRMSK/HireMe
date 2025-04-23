@@ -1,6 +1,6 @@
 import { Button, Table, Alert } from "flowbite-react";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 export default function VacancyPage() {
@@ -9,6 +9,7 @@ export default function VacancyPage() {
   const [applyError, setApplyError] = useState(null);
   const { currentUser } = useSelector((state) => state.userSlice);
   const [createError, setCreateError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getPost = async () => {
@@ -79,7 +80,6 @@ export default function VacancyPage() {
           body: JSON.stringify(hireData),
         }
       );
-
       const data = await res.json();
       console.log(data);
 
@@ -89,7 +89,7 @@ export default function VacancyPage() {
       }
       if (res.ok) {
         setCreateError(null);
-        navigate(`/`);
+        navigate("/dashboard?tab=jobs");
       }
     } catch (error) {
       setCreateError(error);

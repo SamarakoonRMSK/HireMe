@@ -58,6 +58,24 @@ export default function DashSlidebar() {
                   Verify Users
                 </Sidebar.Item>
               </Link>
+              <Link to="/dashboard?tab=chires">
+                <Sidebar.Item
+                  icon={HiDocumentText}
+                  as="div"
+                  active={"chires" === searchParams.get("tab")}
+                >
+                  Completed Hires
+                </Sidebar.Item>
+              </Link>
+              <Link to="/dashboard?tab=posts">
+                <Sidebar.Item
+                  icon={HiDocumentText}
+                  as="div"
+                  active={"posts" === searchParams.get("tab")}
+                >
+                  All Jobs
+                </Sidebar.Item>
+              </Link>
             </>
           )}
           <Link to="/dashboard?tab=profile">
@@ -69,7 +87,29 @@ export default function DashSlidebar() {
             >
               Profile
             </Sidebar.Item>
-          </Link>
+          </Link>  
+          {currentUser && currentUser.role === "driver" && (
+            <>
+              <Link to="/dashboard?tab=driverhire">
+                <Sidebar.Item
+                  icon={HiDocumentText}
+                  active={"driverhire" === searchParams.get("tab")}
+                  as="div"
+                >
+                  Your Job Posts
+                </Sidebar.Item>
+              </Link>
+              <Link to="/dashboard?tab=completedhires">
+                <Sidebar.Item
+                  icon={HiDocumentText}
+                  active={"completedhires" === searchParams.get("tab")}
+                  as="div"
+                >
+                  Your Completed Jobs
+                </Sidebar.Item>
+              </Link>
+            </>
+          )}
           {currentUser && currentUser.role === "customer" && (
             <>
               <Link to="/dashboard?tab=jobs">

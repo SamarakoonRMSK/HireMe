@@ -2,6 +2,7 @@ import { errorHandler } from "../utils/error.js";
 import Hire from "../models/hire.model.js";
 import User from "../models/user.model.js";
 import Post from "../models/post.model.js";
+import Notification from "../models/notification.model.js";
 
 export const createHire = async (req, res, next) => {
   try {
@@ -42,6 +43,14 @@ export const createHire = async (req, res, next) => {
         { new: true }
       );
     }
+
+    const newNotification = Notification({
+      customerId: req.user.id,
+      description:"You have been added to the new hire.",
+      price:req.body.price,
+    });
+    await newNotification.save();
+
     const data = await newHire.save();
     res.status(201).json(data);
   } catch (error) {
@@ -85,6 +94,13 @@ export const updateHireStatus = async (req, res) => {
     hire.feedback = feedback;
     hire.rate = rate;
 
+    const newNotification = Notification({
+      customerId: hire.customerId,
+      description:"You hire is completed.",
+      price:hire.price,
+    });
+    await newNotification.save();
+
     await Promise.all([driver.save(), hire.save()]);
 
     res.json({ message: "Hire updated successfully!" });
@@ -110,3 +126,73 @@ export const getCompleteHires = async (req, res, next) => {
     next(error);
   }
 };
+export const getCompleteHiresByAdmin = async (req, res, next) => {
+  try {
+    if (req.user.role !== "admin") {
+      return next(403, "You are not allowed to get Hires");
+    }
+    if (req.user.id !== req.params.adminId) {
+      return next(403, "You are not allowed to get hires");
+    }
+    const hires = await Hire.find({
+      status: "Completed",
+    });
+    res.status(200).json(hires);
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+export const getDriverHires = async(req , res , next)=>{
+  try {
+    if (req.user.role !== "driver") {
+      return next(403, "You are not allowed to get Hires");
+    }
+    if (req.user.id !== req.params.driverId) {
+      return next(403, "You are not allowed to get hires");
+    }
+    const hires = await Hire.find({
+      driverId: req.params.driverId,
+      status: { $ne: "Completed" },
+    });
+    res.status(200).json(hires);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export const getCompleteDriverHires = async(req,res,next)=>{
+  try {
+    if (req.user.role !== "driver") {
+      return next(403, "You are not allowed to get Hires");
+    }
+    if (req.user.id !== req.params.driverId) {
+      return next(403, "You are not allowed to get hires");
+    }
+    const hires = await Hire.find({
+      driverId: req.params.driverId,
+      status: "Completed",
+    });
+    
+    res.status(200).json(hires);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export const getCompleteDriverFeedback = async(req,res,next)=>{
+  try {
+    if (req.user.role !== "customer") {
+      return next(403, "You are not allowed to get Hires");
+    }
+    const hires = await Hire.find({
+      driverId: req.params.driverId,
+      status: "Completed",
+    }).populate('customerId'); // This will populate the driver object
+    
+    res.status(200).json(hires);
+  } catch (error) {
+    next(error);
+  }
+}

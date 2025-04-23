@@ -1,6 +1,7 @@
 import { Server } from "socket.io";
 import http from "http";
 import express from "express";
+import { setupLocationSocketHandlers } from "../controllers/location.controller.js";
 
 const app = express();
 
@@ -33,6 +34,8 @@ io.on("connection", (socket) => {
     delete userSocketMap[userId];
     io.emit("getOnlineUsers", Object.keys(userSocketMap));
   });
+
+  setupLocationSocketHandlers(io);
 });
 
 export { app, io, server };
