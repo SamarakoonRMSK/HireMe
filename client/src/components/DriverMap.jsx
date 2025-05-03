@@ -15,7 +15,7 @@ const DriverMap = () => {
   const [loading,setLoading] = useState(false);
 
   const { isLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyCYZRUs6fc11sggOvemaWnhFIdHxu9rpvA",
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAP_API_KEY,
     libraries: ['places'],
     id: 'google-map-script'
   });
