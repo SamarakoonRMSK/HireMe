@@ -9,6 +9,7 @@ import {
   HiAnnotation,
   HiUsers,
 } from "react-icons/hi";
+import { MdOutlinePendingActions } from "react-icons/md";
 import { Link, useSearchParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { signoutSuccess } from "../store/user/userSlice";
@@ -119,6 +120,15 @@ export default function DashSlidebar() {
                   as="div"
                 >
                   Your Job Posts
+                </Sidebar.Item>
+              </Link>
+              <Link to="/dashboard?tab=pending">
+                <Sidebar.Item
+                  icon={MdOutlinePendingActions  }
+                  active={"pending" === searchParams.get("tab")}
+                  as="div"
+                >
+                  Your Hires
                 </Sidebar.Item>
               </Link>
               <Link to="/dashboard?tab=hires">

@@ -11,6 +11,7 @@ import DashCompletedDriverHires from "../components/DashCompletedDriverHires";
 import DashCompletedHiresWithFeedback from "../components/DashCompletedHiresWithFeedback";
 import DashboardComp from "../components/DashboardComp";
 import DashPosts from "../components/DashPosts";
+import DashCustomerPendingHires from "../components/DashCustomerPendingHires";
 
 export default function Dashboard() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -24,6 +25,9 @@ export default function Dashboard() {
       {"jobs" === searchParams.get("tab") &&
         currentUser &&
         currentUser.role === "customer" && <DashJobPosts />}
+      {"pending" === searchParams.get("tab") &&
+        currentUser &&
+        currentUser.role === "customer" && <DashCustomerPendingHires />}
       {"hires" === searchParams.get("tab") &&
         currentUser &&
         currentUser.role === "customer" && <DashCustomerHires />}

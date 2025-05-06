@@ -75,6 +75,43 @@ export const getCustomerHires = async (req, res, next) => {
   }
 };
 
+  export const customerPendingHires = async (req, res, next) => {
+    try {
+      if (req.user.role !== "customer") {
+        return next(403, "You are not allowed to get Hires");
+      }
+      if (req.user.id !== req.params.customerId) {
+        return next(403, "You are not allowed to get hires");
+      }
+      const hires = await Hire.find({
+        customerId: req.params.customerId,
+        status: "Pending",
+      });
+      res.status(200).json(hires);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  export const cancelHireByCustomer = async (req, res, next) => {
+    try {
+      const { hireId, customerId } = req.params;
+      if (req.user.role !== 'customer' || req.user.id !== customerId) {
+        return next(403, 'Unauthorized');
+      }
+      const hire = await Hire.findById(hireId);
+      if (!hire) {
+        return next(errorHandler(404, "Hire record not found"));
+      }
+      hire.status = "Cancelled";
+      await hire.save();
+      res.status(200).json({ message: 'Hire cancelled successfully' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+
 export const updateHireStatus = async (req, res) => {
   try {
     const { hireId, feedback, rate } = req.body;
