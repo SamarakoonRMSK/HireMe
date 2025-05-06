@@ -21,7 +21,7 @@ export const signup = async (req, res, next) => {
   const hashedPass = bcrypt.hashSync(password, 10);
 
   if (role === "driver") {
-    const { address, licenceNumber, policeReport, vType, about, dob } =
+    const { address, licenceNumber, policeReport, vType, about, dob,perHour } =
       req.body;
     if (
       !dob ||
@@ -51,6 +51,7 @@ export const signup = async (req, res, next) => {
         policeReport,
         vType,
         about,
+        perHour,
         dob: new Date(dob),
       });
       await newUser.save();

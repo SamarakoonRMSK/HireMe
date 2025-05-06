@@ -50,6 +50,12 @@ const userSchema = new mongoose.Schema(
         return this.role === "driver";
       },
     },
+    perHour: {
+      type: Number,
+      required: function () {
+        return this.role === "driver";
+      },
+    },
     licenceNumber: {
       type: String,
       required: function () {

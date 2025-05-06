@@ -251,6 +251,19 @@ export default function Signup() {
 
                 <div>
                   <div className="mb-2 block">
+                    <Label value="Hour rate" />
+                  </div>
+                  <TextInput
+                    id="perHour"
+                    type="number"
+                    placeholder="Per Hour"
+                    required
+                    onChange={handleChange}
+                    addon="Rs."
+                  />
+                </div>
+                <div>
+                  <div className="mb-2 block">
                     <Label value="Your address" />
                   </div>
                   <TextInput
