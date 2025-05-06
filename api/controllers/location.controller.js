@@ -1,4 +1,5 @@
 import DriverLocation from '../models/location.model.js';
+import User from '../models/user.model.js';
 
 // Track active driver sockets
 const activeDrivers = new Map();
@@ -12,8 +13,19 @@ const updateLocation = async (io, data) => {
       type: 'Point',
       coordinates: [parseFloat(lng), parseFloat(lat)]
     };
-    if(role === "driver"){
-      const driverLocation = await DriverLocation.findOneAndUpdate(
+
+    const updateUser = await User.findByIdAndUpdate(
+      driverId,
+      {
+        isOnline: true,
+        location: location,
+      },
+      { new: true }
+    );
+    if (!updateUser) {
+      throw new Error("User not found or update failed.");
+    }
+    const driverLocation = await DriverLocation.findOneAndUpdate(
         { driverId },
         { 
           name,
@@ -26,11 +38,6 @@ const updateLocation = async (io, data) => {
       ).lean();
       io.emit('driver:location-updated', driverLocation);
     return driverLocation;
-    }else{
-      console.log("you are not driver");
-      return;
-      
-    }
 
     // Broadcast to all dispatchers
     
@@ -43,6 +50,16 @@ const updateLocation = async (io, data) => {
 // Set driver offline
 const setOffline = async (io, driverId) => {
   try {
+    const updateUser = await User.findByIdAndUpdate(
+      driverId,
+      {
+        isOnline: false,
+      },
+      { new: true }
+    );
+    if (!updateUser) {
+      throw new Error("User not found or update failed.");
+    }
     await DriverLocation.findOneAndUpdate(
       { driverId },
       { online: false }
@@ -57,7 +74,7 @@ const setOffline = async (io, driverId) => {
 // Get all online drivers
 const getOnlineDrivers = async () => {
   try {
-    return await DriverLocation.find({ online: true });
+    return await DriverLocation.find({ online: true ,role:"driver" });
   } catch (error) {
     console.error('Get online drivers error:', error);
     throw error;

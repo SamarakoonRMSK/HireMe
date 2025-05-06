@@ -15,7 +15,7 @@ const DriverMap = () => {
   const [loading,setLoading] = useState(false);
 
   const { isLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAP_API_KEY,
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
     libraries: ['places'],
     id: 'google-map-script'
   });
@@ -48,15 +48,17 @@ const DriverMap = () => {
     //   });
 
     socket.on('driver:location-updated', (updatedDriver) => {
-      setDriverLocations(prev => {
-        const existingIndex = prev.findIndex(d => d.driverId === updatedDriver.driverId);
-        if (existingIndex >= 0) {
-          const newLocations = [...prev];
-          newLocations[existingIndex] = updatedDriver;
-          return newLocations;
-        }
-        return [...prev, updatedDriver];
-      });
+      if(updatedDriver.role === "driver"){
+        setDriverLocations(prev => {
+          const existingIndex = prev.findIndex(d => d.driverId === updatedDriver.driverId);
+          if (existingIndex >= 0) {
+            const newLocations = [...prev];
+            newLocations[existingIndex] = updatedDriver;
+            return newLocations;
+          }
+          return [...prev, updatedDriver];
+        });
+      }
     });
 
     setLoading(true)

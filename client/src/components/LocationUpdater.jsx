@@ -31,11 +31,11 @@ const LocationUpdater = ({ driverId, name,role }) => {
     );
 
     // Set initial online status
-    socket.emit('driver:update-location', {
-      name,
-      lat: 0,
-      lng: 0
-    });
+    // socket.emit('driver:update-location', {
+    //   name,
+    //   lat: 0,
+    //   lng: 0
+    // });
 
     return () => {
       navigator.geolocation.clearWatch(watchId);

@@ -14,8 +14,12 @@ import Jobs from "./pages/Jobs";
 import Footer from "./components/Footer";
 import GoogleMap from "./pages/GoogleMap";
 import Driver from "./pages/Driver";
+import { useSelector } from "react-redux";
+import LocationUpdater from "./components/LocationUpdater";
 
 export default function App() {
+  const { currentUser } = useSelector((state) => state.userSlice);
+
   return (
     <BrowserRouter>
       <Header />
@@ -40,6 +44,12 @@ export default function App() {
         {/* admin */}
       </Routes>
       <Footer/>
+      {currentUser && <LocationUpdater 
+        driverId={currentUser._id} 
+        name={currentUser.fullName}
+        role={currentUser.role}  
+        />}
+
     </BrowserRouter>
   );
 }

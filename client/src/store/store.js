@@ -1,5 +1,6 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import userSliceReducer from "./user/userSlice";
+import locationSliceReducer from "./location/locationSlice";
 import { persistReducer, persistStore, createTransform } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
@@ -20,11 +21,12 @@ const expireTransform = createTransform(
     // State is not expired, return it as is
     return outboundState;
   },
-  { whitelist: ["userSlice"] }
+  { whitelist: ["userSlice","locationSlice"] }
 );
 
 const rootReducer = combineReducers({
   userSlice: userSliceReducer,
+  locationSlice: locationSliceReducer,
 });
 
 const persistConfig = {

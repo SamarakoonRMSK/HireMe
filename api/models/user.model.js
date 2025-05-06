@@ -18,7 +18,15 @@ const userSchema = new mongoose.Schema(
     },
     isOnline:{
       type: Boolean,
-      required: true,
+    },
+    location: {
+      type: {
+        type: String,
+        enum: ['Point'],
+      },
+      coordinates: {
+        type: [Number],
+      }
     },
     profilePicture: {
       type: String,

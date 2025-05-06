@@ -44,7 +44,7 @@ export default function Message() {
     <div className="flex max-h-screen overflow-hidden">
       <div className="w-1/4 bg-blue-100 border-r border-gray-300">
         <header className="p-4 h-[8vh] border-b border-gray-300 flex justify-between items-center bg-blue-300 text-black">
-          <h1 className="text-2xl font-semibold">Users</h1>
+          <h1 className="text-2xl font-semibold">{currentUser.role === "driver" ?"Users":"Drivers"}</h1>
         </header>
 
         <div className="overflow-y-auto h-[75vh] p-3 mb-9 pb-20 bg-blue-100">
@@ -66,7 +66,7 @@ export default function Message() {
                   </div>
                   <div className="flex-1">
                     <h2 className="text-lg font-semibold">{user.fullName}</h2>
-                    <p className="text-gray-600">Hoorayy!!</p>
+                    <p className="text-gray-600">{user.isOnline? "Online":"Offline"}</p>
                   </div>
                 </div>
               </Link>
