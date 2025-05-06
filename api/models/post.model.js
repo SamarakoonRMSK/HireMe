@@ -21,6 +21,26 @@ const PostSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  fromLat: {
+    type: Number,
+    required: true,
+  },
+  fromLng: {
+    type: Number,
+    required: true,
+  },
+  toLat: {
+    type: Number,
+    required: true,
+  },
+  toLng: {
+    type: Number,
+    required: true,
+  },
+  distance: {
+    type: Number,
+    required: true,
+  },
   return: {
     type: Boolean,
     default: false,
@@ -29,13 +49,21 @@ const PostSchema = new mongoose.Schema({
     type: Array,
     default: [],
   },
+  bookingDateTime: {
+    type: Date,
+    required: true,
+  },
+  hiringDays: {
+    type: Number,
+    required: true,
+  },
+  hiringHours: {
+    type: Number,
+    required: true,
+  },
   status: {
     type: Boolean,
     default: false,
-  },
-  duration: {
-    type: Number,
-    required: true,
   },
   vType: {
     type: String,

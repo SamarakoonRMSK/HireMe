@@ -111,6 +111,8 @@ export default function CreatePost() {
     }
   }, []);
 
+  console.log("formdata",formData);
+  
   // Trigger distance and route calculation when coordinates change
   useEffect(() => {
     if (formData.fromLat && formData.fromLng && formData.toLat && formData.toLng) {
@@ -335,6 +337,7 @@ export default function CreatePost() {
               placeholder="Price (Rs.)"
               required
               id="price"
+              min={ parseInt(minPrice)}
               className="flex-1"
               onChange={(e) => setFormData({ ...formData, price: e.target.value })}
               addon="Rs."

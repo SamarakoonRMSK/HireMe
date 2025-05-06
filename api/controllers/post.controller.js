@@ -10,7 +10,6 @@ export const createPost = async (req, res, next) => {
     !req.body.description ||
     !req.body.from ||
     !req.body.to ||
-    !req.body.duration ||
     !req.body.vType ||
     !req.body.price ||
     req.body.vType === ""
