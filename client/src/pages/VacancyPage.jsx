@@ -71,6 +71,10 @@ export default function VacancyPage() {
         postId: post._id,
         return: post.return,
         bookingDateTime: post.bookingDateTime,
+        distance:post.distance,
+        bookingDateTime:post.bookingDateTime,
+        hiringDays:post.hiringDays,
+        hiringHours:post.hiringHours
       };
       const res = await fetch(
         `/api/hire/create/${currentUser._id}/${driverId}`,

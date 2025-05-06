@@ -22,7 +22,6 @@ export const createHire = async (req, res, next) => {
     if (
       !req.body.from ||
       !req.body.to ||
-      !req.body.duration ||
       !req.body.vType ||
       !req.body.price ||
       req.body.vType === ""

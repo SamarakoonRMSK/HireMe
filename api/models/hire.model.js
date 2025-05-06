@@ -19,7 +19,19 @@ const HireSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  duration: {
+  distance: {
+    type: Number,
+    required: true,
+  },
+  bookingDateTime: {
+    type: Date,
+    required: true,
+  },
+  hiringDays: {
+    type: Number,
+    required: true,
+  },
+  hiringHours: {
     type: Number,
     required: true,
   },
@@ -37,7 +49,7 @@ const HireSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    default: "Not Completed",
+    default: "Pending",
   },
   rate: {
     type: Number,
