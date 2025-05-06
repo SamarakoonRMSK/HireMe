@@ -294,6 +294,13 @@ export default function DashProfile() {
         {currentUser && currentUser.role === "driver" && (
           <>
             <TextInput
+              id="perHour"
+              type="number"
+              placeholder="Hour rate"
+              defaultValue={currentUser.perHour}
+              onChange={handleChange}
+            />
+            <TextInput
               id="address"
               type="text"
               placeholder="address"

@@ -60,6 +60,7 @@ export const updateUser = async (req, res, next) => {
             vType: req.body.vType,
             about: req.body.about,
             dob: req.body.dob,
+            perHour: req.body.perHour
           },
         },
         { new: true }
