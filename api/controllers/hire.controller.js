@@ -226,6 +226,7 @@ export const getCompleteDriverHires = async(req,res,next)=>{
     const hires = await Hire.find({
       driverId: req.params.driverId,
       status: "Completed",
+      paymentStatus:"Paid"
     });
     
     res.status(200).json(hires);
