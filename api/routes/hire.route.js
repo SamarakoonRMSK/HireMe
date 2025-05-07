@@ -10,7 +10,11 @@ import {
   getDriverHires,
   updateHireStatus,
   customerPendingHires,
-  cancelHireByCustomer
+  cancelHireByCustomer,
+  driverIncomingHires,
+  rejectHireByDriver,
+  acceptHireByDriver,
+  getRejectedHires
 } from "../controllers/hire.controller.js";
 
 const router = express.Router();
@@ -20,9 +24,13 @@ router.get("/customer-pending-hires/:customerId", verifyToken, customerPendingHi
 router.get("/getcustomerhires/:customerId", verifyToken, getCustomerHires);
 router.get("/getcompletedriverhires/:driverId", verifyToken, getCompleteDriverHires);
 router.get("/getcompletedriverFeedback/:driverId", verifyToken, getCompleteDriverFeedback);
+router.get("/get-rejected-hires/:userId", verifyToken, getRejectedHires);
+router.get('/driver-incoming-hires/:driverId', verifyToken, driverIncomingHires);
 router.get("/getdriverhires/:driverId", verifyToken, getDriverHires);
 router.get("/get-complete-hires/:customerId", verifyToken, getCompleteHires);
 router.get("/getcompletehiresbyadmin/:adminId", verifyToken, getCompleteHiresByAdmin);
+router.put('/accept/:hireId/:driverId', verifyToken, acceptHireByDriver);
+router.put('/reject/:hireId/:driverId', verifyToken, rejectHireByDriver);
 router.put('/cancel/:hireId/:customerId', verifyToken, cancelHireByCustomer);
 router.put("/update-status", verifyToken, updateHireStatus);
 

@@ -12,6 +12,8 @@ import DashCompletedHiresWithFeedback from "../components/DashCompletedHiresWith
 import DashboardComp from "../components/DashboardComp";
 import DashPosts from "../components/DashPosts";
 import DashCustomerPendingHires from "../components/DashCustomerPendingHires";
+import DashDriverIncomingJobs from "../components/DashDriverIncomingJobs";
+import DashCancelledHires from "../components/DashCancelledHires";
 
 export default function Dashboard() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -46,12 +48,18 @@ export default function Dashboard() {
       {"completed" === searchParams.get("tab") &&
         currentUser &&
         currentUser.role === "customer" && <DashCompletedHires />}
+      {"pending" === searchParams.get("tab") &&
+        currentUser &&
+        currentUser.role === "driver" && <DashDriverIncomingJobs />}
       {"driverhire" === searchParams.get("tab") &&
         currentUser &&
         currentUser.role === "driver" && <DashDriverHires />}
       {"completedhires" === searchParams.get("tab") &&
         currentUser &&
         currentUser.role === "driver" && <DashCompletedDriverHires />}
+      {"cancel" === searchParams.get("tab") &&
+        currentUser &&
+        currentUser.role !== "admin" && <DashCancelledHires />}
     </div>
   );
 }

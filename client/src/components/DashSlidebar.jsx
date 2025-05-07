@@ -9,7 +9,7 @@ import {
   HiAnnotation,
   HiUsers,
 } from "react-icons/hi";
-import { MdOutlinePendingActions } from "react-icons/md";
+import { MdFreeCancellation, MdOutlinePendingActions } from "react-icons/md";
 import { Link, useSearchParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { signoutSuccess } from "../store/user/userSlice";
@@ -91,6 +91,15 @@ export default function DashSlidebar() {
           </Link>  
           {currentUser && currentUser.role === "driver" && (
             <>
+              <Link to="/dashboard?tab=pending">
+                <Sidebar.Item
+                  icon={MdOutlinePendingActions}
+                  active={"pending" === searchParams.get("tab")}
+                  as="div"
+                >
+                  Incoming Jobs
+                </Sidebar.Item>
+              </Link>
               <Link to="/dashboard?tab=driverhire">
                 <Sidebar.Item
                   icon={HiDocumentText}
@@ -128,7 +137,7 @@ export default function DashSlidebar() {
                   active={"pending" === searchParams.get("tab")}
                   as="div"
                 >
-                  Your Hires
+                  Pending Hires
                 </Sidebar.Item>
               </Link>
               <Link to="/dashboard?tab=hires">
@@ -150,6 +159,17 @@ export default function DashSlidebar() {
                 </Sidebar.Item>
               </Link>
             </>
+          )}
+          {currentUser && currentUser.role !== "admin" && (
+            <Link to="/dashboard?tab=cancel">
+            <Sidebar.Item
+              icon={MdFreeCancellation }
+              active={"cancel" === searchParams.get("tab")}
+              as="div"
+            >
+              Cancelled Hires
+            </Sidebar.Item>
+          </Link>
           )}
           <Sidebar.Item
             icon={HiArrowSmRight}

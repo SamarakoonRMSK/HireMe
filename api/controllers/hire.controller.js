@@ -232,3 +232,93 @@ export const getCompleteDriverFeedback = async(req,res,next)=>{
     next(error);
   }
 }
+export const getRejectedHires = async(req,res,next)=>{
+  try {
+    if (req.user.role === "admin") {
+      return next(403, "You are not allowed to get Hires");
+    }
+    if(req.user.role === "driver"){
+      var hires = await Hire.find({
+        driverId: req.params.userId,
+        status: "Cancelled",
+      }).populate(['customerId','driverId']);
+    }else{
+      var hires = await Hire.find({
+        customerId: req.params.userId,
+        status: "Cancelled",
+      }).populate(['customerId','driverId']);
+    }
+      // This will populate the driver object
+    
+    res.status(200).json(hires);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export const driverIncomingHires = async (req, res, next) => {
+  try {
+    const { driverId } = req.params;
+    if (!req.user || req.user.role !== 'driver' || req.user.id !== driverId) {
+      console.error('Unauthorized access attempt:', { role: req.user?.role, userId: req.user?.id, driverId });
+      return res.status(403).json({ message: 'Unauthorized: Only drivers can view their incoming hires' });
+    }
+
+    const hires = await Hire.find({
+      driverId,
+      status: 'Pending',
+    });
+
+    res.status(200).json(hires);
+  } catch (error) {
+    console.error('Error in driverIncomingHires:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+export const rejectHireByDriver = async (req, res, next) => {
+  try {
+    const { hireId, driverId } = req.params;
+    if (!req.user || req.user.role !== 'driver' || req.user.id !== driverId) {
+      console.error('Unauthorized access attempt:', { role: req.user?.role, userId: req.user?.id, driverId });
+      return next(403,'Unauthorized: Only drivers can reject hires');
+    }
+    const hire = await Hire.findById(hireId);
+    if (!hire) {
+      return next(404,'Hire not found');
+    }
+    if (hire.status !== 'Pending') {
+      return next(400,`Hire cannot be rejected (current status: ${hire.status})`);
+    }
+    hire.status = 'Cancelled';
+    await hire.save();
+    res.status(200).json({ message: 'Hire rejected successfully' });
+  } catch (error) {
+    console.error('Error in rejectHireByDriver:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+export const acceptHireByDriver = async (req, res, next) => {
+  try {
+    const { hireId, driverId } = req.params;
+
+    if (!req.user || req.user.role !== 'driver' || req.user.id !== driverId) {
+      return next(403,'Unauthorized: Only drivers can reject hires');
+    }
+    const hire = await Hire.findById(hireId);
+    if (!hire) {
+      return next(404,'Hire not found');
+    }
+    if (hire.status !== 'Pending') {
+      return next(400,`Hire cannot be rejected (current status: ${hire.status})`);
+    }
+
+    hire.status = 'Accepted';
+    await hire.save();
+    res.status(200).json({ message: 'Hire accepted successfully' });
+  } catch (error) {
+    console.error('Error in acceptHireByDriver:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
