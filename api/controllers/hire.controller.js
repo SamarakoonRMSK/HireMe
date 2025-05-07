@@ -67,7 +67,8 @@ export const getCustomerHires = async (req, res, next) => {
     }
     const hires = await Hire.find({
       customerId: req.params.customerId,
-      status: { $ne: "Completed" },
+      status: {$in : ["Completed","Accepted"]},
+      paymentStatus: "Pending"
     });
     res.status(200).json(hires);
   } catch (error) {
@@ -111,37 +112,28 @@ export const getCustomerHires = async (req, res, next) => {
     }
   };
 
-
 export const updateHireStatus = async (req, res) => {
   try {
     const { hireId, feedback, rate } = req.body;
 
+
+    if (!feedback || typeof feedback !== 'string') {
+      return next(400,'Feedback is required');
+    }
+    if (typeof rate !== 'number' || rate < 0 || rate > 5) {
+      return next(400,'Rating must be between 0 and 5');
+    }
     const hire = await Hire.findById(hireId);
     if (!hire) {
-      return next(errorHandler(404, "Hire record not found"));
+      return next(404,'Hire not found');
     }
-    const driver = await User.findById(hire.driverId);
-    if (!driver) {
-      return next(errorHandler(404, "Driver not found"));
-    }
-    driver.rate.push(rate);
-
-    hire.status = "Completed";
     hire.feedback = feedback;
-    hire.rate = rate;
-
-    const newNotification = Notification({
-      customerId: hire.customerId,
-      description:"You hire is completed.",
-      price:hire.price,
-    });
-    await newNotification.save();
-
-    await Promise.all([driver.save(), hire.save()]);
-
-    res.json({ message: "Hire updated successfully!" });
+    hire.rating = rate;
+    hire.paymentStatus = 'Paid';
+    await hire.save();
+    res.status(200).json({ message: 'Feedback submitted successfully' });
   } catch (error) {
-    next(error);
+    next(500, 'Server error' );
   }
 };
 
@@ -156,6 +148,7 @@ export const getCompleteHires = async (req, res, next) => {
     const hires = await Hire.find({
       customerId: req.params.customerId,
       status: "Completed",
+      paymentStatus:"Paid"
     });
     res.status(200).json(hires);
   } catch (error) {

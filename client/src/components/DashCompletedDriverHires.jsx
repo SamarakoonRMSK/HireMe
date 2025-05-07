@@ -6,6 +6,12 @@ export default function DashCompletedDriverHires() {
     const { currentUser } = useSelector((state) => state.userSlice);
     const [userHires, setUserHires] = useState([]);
 
+    const getDurationText = (days, hours) => {
+      const dayText = days ? `${days} day${days > 1 ? 's' : ''}` : '';
+      const hourText = hours ? `${hours} hour${hours > 1 ? 's' : ''}` : '';
+      return [dayText, hourText].filter(Boolean).join(' and ');
+    };
+
     useEffect(() => {
         const fetchHires = async () => {
           try {
@@ -35,7 +41,7 @@ export default function DashCompletedDriverHires() {
             <Table.HeadCell>Status</Table.HeadCell>
             <Table.HeadCell>From</Table.HeadCell>
             <Table.HeadCell>To</Table.HeadCell>
-            <Table.HeadCell>Duration (Days)</Table.HeadCell>
+            <Table.HeadCell>Duration</Table.HeadCell>
             <Table.HeadCell>Vehicle Type</Table.HeadCell>
             <Table.HeadCell>Amount</Table.HeadCell>
             <Table.HeadCell>Rate</Table.HeadCell>
@@ -47,9 +53,9 @@ export default function DashCompletedDriverHires() {
 
                 <Table.Cell>{hire.from}</Table.Cell>
                 <Table.Cell>{hire.to}</Table.Cell>
-                <Table.Cell>{hire.duration}</Table.Cell>
+                <Table.Cell>{getDurationText(hire.hiringDays, hire.hiringHours)}</Table.Cell>
                 <Table.Cell>{hire.vType}</Table.Cell>
-                <Table.Cell>{hire.price}</Table.Cell>
+                <Table.Cell>Rs. {hire.price.toLocaleString()}</Table.Cell>
                 <Table.Cell>{hire.rate}</Table.Cell>
               </Table.Row>
             </Table.Body>
