@@ -27,7 +27,7 @@ export default function DashCancelledHires() {
           console.log(error);
         }
       };
-      if (currentUser && currentUser.role === "customer") {
+      if (currentUser && currentUser.role !== "admin") {
         fetchHires();
       }
     }, [currentUser._id]);
