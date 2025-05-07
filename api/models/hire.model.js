@@ -49,7 +49,13 @@ const HireSchema = new mongoose.Schema({
   },
   status: {
     type: String,
+    enum: ['Pending', 'Accepted', 'Cancelled', 'Completed'],
     default: "Pending",
+  },
+  paymentStatus: {
+    type: String,
+    enum: ['Pending', 'Paid'],
+    default: 'Pending',
   },
   rate: {
     type: Number,

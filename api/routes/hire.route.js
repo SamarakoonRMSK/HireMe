@@ -14,7 +14,8 @@ import {
   driverIncomingHires,
   rejectHireByDriver,
   acceptHireByDriver,
-  getRejectedHires
+  getRejectedHires,
+  notifyCustomerComplete
 } from "../controllers/hire.controller.js";
 
 const router = express.Router();
@@ -29,6 +30,8 @@ router.get('/driver-incoming-hires/:driverId', verifyToken, driverIncomingHires)
 router.get("/getdriverhires/:driverId", verifyToken, getDriverHires);
 router.get("/get-complete-hires/:customerId", verifyToken, getCompleteHires);
 router.get("/getcompletehiresbyadmin/:adminId", verifyToken, getCompleteHiresByAdmin);
+router.put('/notify-complete/:hireId/:driverId', verifyToken, notifyCustomerComplete);
+
 router.put('/accept/:hireId/:driverId', verifyToken, acceptHireByDriver);
 router.put('/reject/:hireId/:driverId', verifyToken, rejectHireByDriver);
 router.put('/cancel/:hireId/:customerId', verifyToken, cancelHireByCustomer);

@@ -180,23 +180,47 @@ export const getCompleteHiresByAdmin = async (req, res, next) => {
 };
 
 
-export const getDriverHires = async(req , res , next)=>{
+export const getDriverHires = async (req, res, next) => {
   try {
-    if (req.user.role !== "driver") {
-      return next(403, "You are not allowed to get Hires");
-    }
-    if (req.user.id !== req.params.driverId) {
-      return next(403, "You are not allowed to get hires");
+    const { driverId } = req.params;
+    if (!req.user || req.user.role !== 'driver' || req.user.id !== driverId) {
+      return next(403,'Unauthorized: Only drivers can view their hires');
     }
     const hires = await Hire.find({
-      driverId: req.params.driverId,
-      status: { $ne: "Completed" },
+      driverId,
+      status: { $in: ['Accepted', 'Completed'] },
+      paymentStatus: 'Pending',
     });
+
     res.status(200).json(hires);
   } catch (error) {
     next(error);
   }
-}
+};
+
+export const notifyCustomerComplete = async (req, res, next) => {
+  try {
+    const { hireId, driverId } = req.params;
+
+    if (!req.user || req.user.role !== 'driver' || req.user.id !== driverId) {
+      return next(403,'Unauthorized: Only drivers can notify completion');
+    }
+    const hire = await Hire.findById(hireId);
+    if (!hire) {
+      return next(404,'Hire not found');
+    }
+
+    if (hire.status !== 'Accepted') {
+      return next(400,`Hire cannot be marked completed (current status: ${hire.status})`);
+    }
+
+    hire.status = 'Completed';
+    await hire.save();
+    res.status(200).json({ message: 'Customer notified successfully', hire });
+  } catch (error) {
+    next(error);
+  }
+};
 
 export const getCompleteDriverHires = async(req,res,next)=>{
   try {

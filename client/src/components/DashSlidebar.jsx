@@ -106,7 +106,7 @@ export default function DashSlidebar() {
                   active={"driverhire" === searchParams.get("tab")}
                   as="div"
                 >
-                  Your Job Posts
+                  Your Jobs
                 </Sidebar.Item>
               </Link>
               <Link to="/dashboard?tab=completedhires">
