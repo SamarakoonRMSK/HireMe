@@ -36,7 +36,7 @@ export default function DashSlidebar() {
   };
 
   return (
-    <Sidebar className="w-full sm:w-60" aria-label="Default sidebar example">
+    <Sidebar className="w-full sm:w-60 border-r-2" aria-label="Default sidebar example">
       <Sidebar.Items>
         <Sidebar.ItemGroup>
           {currentUser && currentUser.role === "admin" && (
