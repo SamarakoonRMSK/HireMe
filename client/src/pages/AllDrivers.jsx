@@ -5,7 +5,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 
 export default function AllDrivers() {
   const { currentUser } = useSelector((state) => state.userSlice);
-  const [showMore, setShowMore] = useState(true);
+  const [showMore, setShowMore] = useState(false);
   const [drivers, setDrivers] = useState([]);
   const [loading, setLoading] = useState(false);
   const location = useLocation();
@@ -14,7 +14,7 @@ export default function AllDrivers() {
   const [sidebarData, setSidebarData] = useState({
     vType: "",
     sort: "desc",
-    rate: 0,
+    isOnline: false,
   });
 
   const handleSubmit = (e) => {
@@ -22,7 +22,8 @@ export default function AllDrivers() {
     const urlParams = new URLSearchParams(location.search);
     urlParams.set("vType", sidebarData.vType);
     urlParams.set("sort", sidebarData.sort);
-    urlParams.set("rate", sidebarData.rate);
+    urlParams.set("isOnline", sidebarData.isOnline);
+    urlParams.set("search", sidebarData.search);
     const searchQuery = urlParams.toString();
     navigate(`/drivers?${searchQuery}`);
   };
@@ -31,6 +32,10 @@ export default function AllDrivers() {
     if (e.target.id === "vType") {
       setSidebarData({ ...sidebarData, vType: e.target.value });
     }
+    if (e.target.id === "search") {
+      setSidebarData({ ...sidebarData, search: e.target.value });
+    }
+
     if (e.target.id === "sort") {
       const order = e.target.value || "desc";
       setSidebarData({ ...sidebarData, sort: order });
@@ -39,9 +44,9 @@ export default function AllDrivers() {
 
   const handleCheckboxChange = (e) => {
     if (e.target.checked) {
-      setSidebarData({ ...sidebarData, rate: 1 });
+      setSidebarData({ ...sidebarData, isOnline: true });
     } else {
-      setSidebarData({ ...sidebarData, rate: 0 });
+      setSidebarData({ ...sidebarData, isOnline: false });
     }
   };
 
@@ -50,28 +55,36 @@ export default function AllDrivers() {
     const searchTermFromUrl = urlParams.get("vType");
     const sortFromUrl = urlParams.get("sort");
     const rateFormUrl = urlParams.get("rate");
-    if (searchTermFromUrl || sortFromUrl || rateFormUrl) {
+    const searchFormUrl = urlParams.get("search");
+    if (searchTermFromUrl || sortFromUrl || rateFormUrl || searchFormUrl) {
       setSidebarData({
         ...sidebarData,
         vType: searchTermFromUrl,
         sort: sortFromUrl,
         rate: rateFormUrl,
+        search:searchFormUrl
       });
     }
 
     const fetchPosts = async () => {
       setLoading(true);
       const searchQuery = urlParams.toString();
-      const res = await fetch(`/api/user/getusers?${searchQuery}`);
+      const res = await fetch(`/api/user/getusers?${searchQuery}`,{
+        method:"POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body:JSON.stringify({location :currentUser.location})
+      });
       if (!res.ok) {
         setLoading(false);
         return;
       }
       if (res.ok) {
         const data = await res.json();
-        setDrivers(data.users);
+        setDrivers(data.drivers);
         setLoading(false);
-        if (data.users.length === 9) {
+        if (data.drivers.length === 9) {
           setShowMore(true);
         } else {
           setShowMore(false);
@@ -110,6 +123,18 @@ export default function AllDrivers() {
         <form className="flex flex-col gap-8" onSubmit={handleSubmit}>
           <div className="flex   items-center gap-2">
             <label className="whitespace-nowrap font-semibold">
+              Name or Email:
+            </label>
+            <TextInput
+              placeholder="Vehicle Type"
+              id="search"
+              type="text"
+              value={sidebarData.search}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="flex   items-center gap-2">
+            <label className="whitespace-nowrap font-semibold">
               Vehicle Type:
             </label>
             <TextInput
@@ -128,11 +153,13 @@ export default function AllDrivers() {
               id="sort"
             >
               <option value="desc">Latest</option>
+              <option value="distance">Distance</option>
+              <option value="rate">Rating</option>
               <option value="asc">Oldest</option>
             </Select>
           </div>
           <div className="flex items-center gap-2">
-            <label className="font-semibold">Sort by rate:</label>
+            <label className="font-semibold">Online Drivers:</label>
             <Checkbox id="rate" onChange={handleCheckboxChange} />
           </div>
 
@@ -149,6 +176,7 @@ export default function AllDrivers() {
                 <Table.HeadCell>Date Join</Table.HeadCell>
                 <Table.HeadCell>Driver Image</Table.HeadCell>
                 <Table.HeadCell>Name</Table.HeadCell>
+                <Table.HeadCell>Distance</Table.HeadCell>
                 <Table.HeadCell>Rating</Table.HeadCell>
                 <Table.HeadCell>Message</Table.HeadCell>
                 <Table.HeadCell>Hire</Table.HeadCell>
@@ -170,6 +198,7 @@ export default function AllDrivers() {
                     </Table.Cell>
 
                     <Table.Cell>{driver.fullName}</Table.Cell>
+                    <Table.Cell>{(driver.distance/1000).toFixed(2)} Km</Table.Cell>
                     <Table.Cell>
                       <Rating>
                         <RatingStar />

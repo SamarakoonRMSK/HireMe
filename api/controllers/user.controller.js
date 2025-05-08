@@ -139,6 +139,108 @@ export const getusers = async (req, res, next) => {
     next(error);
   }
 };
+
+export const filterDrivers = async (req, res, next) => {
+  try {
+    
+    const { location } = req.body;
+    
+    if (!location) {
+      return next(400, "Customer location coordinates are required");
+    }
+    
+    
+    const startIndex = parseInt(req.query.startIndex) || 0;
+    const limit = parseInt(req.query.limit) || 9;
+    
+    const filters = { role: "driver" };
+    
+    
+    if (req.query.isOnline === "true") {
+      filters.isOnline = true;
+    }
+    
+    if (req.query.search) {
+      const searchRegex = new RegExp(req.query.search, "i");
+      filters.$or = [
+        { fullName: searchRegex },
+        { email: searchRegex },
+      ];
+    }
+    
+    if (req.query.vType) {
+      filters.vType = { $in: [req.query.vType] };
+    }
+    
+    const aggregatePipeline = [
+      {
+        $geoNear: {
+          near: {
+            type: "Point",
+            coordinates: location?.coordinates,
+          },
+          distanceField: "distance",
+          spherical: true,
+          query: filters,
+        },
+      },
+      {
+        $addFields: {
+          avgRate: { $avg: "$rate" },
+          distanceKm: { $round: [{ $divide: ["$distance", 1000] }, 2] },
+        },
+      },
+    ];
+    
+    if (req.query.sort === "distance") {
+      aggregatePipeline.push({
+        $sort: { distance: 1 },
+      });
+    } else if (req.query.sort === "rate") {
+      aggregatePipeline.push({
+        $sort: { avgRate: -1 },
+      });
+    } else {
+      const sortDirection = req.query.sort === "asc" ? 1 : -1;
+      aggregatePipeline.push({
+        $sort: { createdAt: sortDirection },
+      });
+    }
+
+    
+    aggregatePipeline.push(
+      { $skip: startIndex },
+      { $limit: limit },
+      {
+        $project: {
+          password: 0,
+        },
+      }
+    );
+    const drivers = await User.aggregate(aggregatePipeline);
+
+    const totalDrivers = await User.countDocuments({ role: "driver" });
+
+    const now = new Date();
+    const oneMonthAgo = new Date(
+      now.getFullYear(),
+      now.getMonth() - 1,
+      now.getDate()
+    );
+    const lastMonthDrivers = await User.countDocuments({
+      role: "driver",
+      createdAt: { $gte: oneMonthAgo },
+    });
+
+    res.status(200).json({
+      drivers,
+      totalDrivers,
+      lastMonthDrivers,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 export const getCustomers = async (req, res, next) => {
   if (req.user.role === "customer") {
     return next(errorHandler(403, "You are not allowed to see all users"));
