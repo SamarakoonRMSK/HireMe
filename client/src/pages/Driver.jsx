@@ -72,7 +72,7 @@ export default function Driver() {
                 )}
               </div>
               <h2 className="text-2xl font-bold text-gray-800">{driver.fullName}</h2>
-              <p className="text-purple-600 font-medium">{driver.role}</p>
+              <p className="text-purple-600 font-medium">{`${driver.isOnline?"Online":"Offline"}`}</p>
               
               <div className="flex items-center mt-2">
                 <Rating>
@@ -193,8 +193,8 @@ export default function Driver() {
                 <p className="text-2xl font-bold">{new Date().getFullYear() - new Date(driver?.createdAt).getFullYear()} yrs</p>
               </div>
               <div className="bg-gradient-to-r from-indigo-500 to-indigo-600 text-white p-4 rounded-xl shadow">
-                <p className="text-sm">Vehicle Types</p>
-                <p className="text-2xl font-bold">{driver?.vType?.length}</p>
+                <p className="text-sm">Hourly rate</p>
+                <p className="text-2xl font-bold">Rs. {driver?.perHour.toLocaleString()}</p>
               </div>
             </div>
           </div>
