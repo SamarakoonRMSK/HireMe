@@ -13,6 +13,7 @@ export default function AllDrivers() {
 
   const [sidebarData, setSidebarData] = useState({
     vType: "",
+    search:"",
     sort: "desc",
     isOnline: false,
   });
@@ -126,10 +127,10 @@ export default function AllDrivers() {
               Name or Email:
             </label>
             <TextInput
-              placeholder="Vehicle Type"
+              placeholder="Email or name"
               id="search"
               type="text"
-              value={sidebarData.search}
+              value={sidebarData.search || ""}
               onChange={handleChange}
             />
           </div>
