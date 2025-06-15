@@ -15,7 +15,7 @@ const router = express.Router();
 
 router.post("/signout", signout);
 router.put("/update/:userId", verifyToken, updateUser);
-// router.get("/getusers", verifyToken, getusers);
+router.get("/getusers", verifyToken, getusers);
 router.post("/getusers", verifyToken, filterDrivers);
 router.get("/getcustomers", verifyToken, getCustomers);
 router.get("/driver/:driverId",verifyToken,getDriver)

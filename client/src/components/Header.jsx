@@ -171,7 +171,9 @@ export default function Header() {
             </Navbar.Link>
           </Link>
         )}
+        <Link to="/about">
         <Navbar.Link as={"div"}>About</Navbar.Link>
+        </Link>
         {currentUser && currentUser.role === "driver" && (
           <Popover content={content} placement="bottom">
           <div className="flex cursor-pointer">

@@ -86,6 +86,9 @@ export default function Signup() {
     }
   };
 
+  console.log(formData);
+  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (
@@ -93,7 +96,7 @@ export default function Signup() {
       !formData.email ||
       !formData.password ||
       !formData.fullName
-    ) {
+    ) {      
       return setErrorMessage("Please fill out all fields");
     }
     if (formData.role === "driver") {

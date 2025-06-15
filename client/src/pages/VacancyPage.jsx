@@ -111,7 +111,7 @@ export default function VacancyPage() {
     const hourText = hours ? `${hours} hour${hours > 1 ? "s" : ""}` : "";
     return [dayText, hourText].filter(Boolean).join(" and ");
   };
-
+  
   return (
     <div className="p-4 sm:p-6 max-w-5xl mx-auto min-h-screen ">
       {post ? (
@@ -249,7 +249,7 @@ export default function VacancyPage() {
                         {user.username}
                       </Table.Cell>
                       <Table.Cell>{user.email}</Table.Cell>
-                      <Table.Cell>{user.rating}</Table.Cell>
+                      <Table.Cell>{user.rating.toFixed(2)}</Table.Cell>
                       {currentUser && currentUser.role === "customer" && (
                         <>
                         <Table.Cell>

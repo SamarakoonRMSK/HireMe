@@ -44,6 +44,7 @@ export const createHire = async (req, res, next) => {
     }
 
     const newNotification = Notification({
+      driverId:req.params.driverId,
       customerId: req.user.id,
       description:"You have been added to the new hire.",
       price:req.body.price,
@@ -128,9 +129,19 @@ export const updateHireStatus = async (req, res) => {
       return next(404,'Hire not found');
     }
     hire.feedback = feedback;
-    hire.rating = rate;
+    hire.rate = rate;
     hire.paymentStatus = 'Paid';
     await hire.save();
+
+ 
+    
+
+    await User.findByIdAndUpdate(
+      hire.driverId,
+      { $push: { rate: rate } },
+      { new: true }
+    );
+
     res.status(200).json({ message: 'Feedback submitted successfully' });
   } catch (error) {
     next(500, 'Server error' );

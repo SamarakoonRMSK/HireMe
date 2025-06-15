@@ -109,3 +109,7 @@ export const signin = async (req, res, next) => {
     next(error);
   }
 };
+
+export const privateRoute = async (req, res, next) => {
+  res.status(200).json(req.user);
+};

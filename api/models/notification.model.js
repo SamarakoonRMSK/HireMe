@@ -7,6 +7,11 @@ const notificationSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    driverId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     description: {
       type: String,
       required: true,

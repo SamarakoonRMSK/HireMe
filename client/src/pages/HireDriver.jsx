@@ -204,7 +204,7 @@ export default function HireDriver() {
 
     const calculateMinPrice = (distance, days, hours) => {
     const baseFare = 200;
-    const perKm = 50;
+    const perKm = 10;
     const perHour = 100;
     const totalHours = parseInt(days) * 24 + parseInt(hours);
     const price = baseFare + distance * perKm + totalHours * perHour;

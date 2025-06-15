@@ -16,6 +16,10 @@ import GoogleMap from "./pages/GoogleMap";
 import Driver from "./pages/Driver";
 import { useSelector } from "react-redux";
 import LocationUpdater from "./components/LocationUpdater";
+import AboutUs from "./pages/AboutUs";
+import PrivateRoute from "./components/PrivateRoute";
+import CustomerRoute from "./components/CustomerRoute";
+import DriverRoute from "./components/DriverRoute";
 
 export default function App() {
   const { currentUser } = useSelector((state) => state.userSlice);
@@ -27,20 +31,27 @@ export default function App() {
         {/* all */}
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/about" element={<AboutUs />} />
         <Route path="/signin" element={<Signin />} />
-        <Route path="/map" element={<GoogleMap />}  />
         {/* both */}
-        <Route path="/vacancy/:postId" element={<VacancyPage />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/message" element={<Message />} />
+        <Route element={<PrivateRoute/>}>
+          <Route path="/map" element={<GoogleMap />}  />
+          <Route path="/vacancy/:postId" element={<VacancyPage />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/message" element={<Message />} />
+        </Route>
         {/* customer */}
-        <Route path="/create-vacancy" element={<CreatePost />} />
-        <Route path="/drivers" element={<AllDrivers />} />
-        <Route path="/driver/:driverId" element={<Driver/>} />
-        <Route path="/hire/:driverId" element={<HireDriver />} />
-        <Route path="/success/:hireId" element={<Success />} />
+        <Route element={<CustomerRoute/>}>
+          <Route path="/create-vacancy" element={<CreatePost />} />
+          <Route path="/drivers" element={<AllDrivers />} />
+          <Route path="/driver/:driverId" element={<Driver/>} />
+          <Route path="/hire/:driverId" element={<HireDriver />} />
+          <Route path="/success/:hireId" element={<Success />} />
+        </Route>
         {/* driver */}
-        <Route path="/jobs" element={<Jobs />} />
+        <Route element={<DriverRoute/>}>
+          <Route path="/jobs" element={<Jobs />} />
+        </Route>
         {/* admin */}
       </Routes>
       <Footer/>

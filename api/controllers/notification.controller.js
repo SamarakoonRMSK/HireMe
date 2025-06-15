@@ -3,7 +3,7 @@ import Notification from "../models/notification.model.js";
 
 export const getLatestNotifications = async (req, res) => {
     try {
-      const notifications = await Notification.find()
+      const notifications = await Notification.find({driverId:req.user.id})
         .sort({ createdAt: -1 }) 
         .limit(5) 
         .populate("customerId");
